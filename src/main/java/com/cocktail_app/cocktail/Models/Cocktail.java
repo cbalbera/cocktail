@@ -32,12 +32,20 @@ public class Cocktail {
     private String glassType;
     private String iceType;
 
+    // constructor with all items
     public Cocktail(String name, String tools, Difficulty difficulty, String instructions, String tags) {
         this.name = name;
         this.tools = tools;
         this.difficulty = difficulty;
         this.instructions = instructions;
         this.tags = tags;
+    }
+
+    // constructor with only non-null / required items
+    public Cocktail(String name, Difficulty difficulty, String instructions) {
+        this.name = name;
+        this.difficulty = difficulty;
+        this.instructions = instructions;
     }
 
     public String getName() {
