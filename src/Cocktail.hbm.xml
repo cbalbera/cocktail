@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "Cocktail" table = "COCKTAIL">
+
+        <meta attribute = "class-description">
+            This class contains the attributes of one cocktail.
+        </meta>
+
+        <id name = "id" type = "int" column = "cocktailId">
+            <generator class="native"/>
+        </id>
+
+        <property name = "name" column = "name" type = "string"/>
+        <property name = "tools" column = "tools" type = "string"/> <!--string will contain list of IDs-->
+        <property name = "difficulty" column = "difficulty" type = "int"/> <!--int mapped to enum in Java class-->
+        <property name = "instructions" column = "name" type = "string"/>
+        <property name = "tags" column = "name" type = "string"/>
+        <property name = "glassType" column = "glass_type" type = "string"/>
+        <property name = "iceType" column = "ice_type" type = "string"/>
+
+    </class>
+</hibernate-mapping>
