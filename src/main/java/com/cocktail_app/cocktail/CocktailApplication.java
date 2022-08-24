@@ -3,6 +3,8 @@ package com.cocktail_app.cocktail;
 import java.util.List;
 import java.util.Iterator;
 
+import com.cocktail_app.cocktail.Models.Cocktail;
+import com.cocktail_app.cocktail.Models.Ingredient;
 import com.cocktail_app.cocktail.Models.Sample;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -44,6 +46,32 @@ public class CocktailApplication {
 
 		// List down new list of the samples
 		CA.listEmployees();
+
+		// add a test cocktail
+		Cocktail testCocktail = new Cocktail("shot_tequila",
+				Cocktail.Difficulty.VERY_EASY, "pour a shot of tequila");
+		CA.addCocktail(testCocktail);
+	}
+
+	// Method to CREATE a Cocktail in the database
+	public void addCocktail(Cocktail cocktail) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Integer ID = null;
+
+		System.out.println("cocktail is " + cocktail);
+		try {
+			tx = session.beginTransaction();
+			session.save(cocktail);
+			System.out.println("cocktail successfully added");
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null) tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return;
 	}
 
 	// Method to CREATE a sample in the database

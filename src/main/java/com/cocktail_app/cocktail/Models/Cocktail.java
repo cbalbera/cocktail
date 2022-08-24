@@ -2,11 +2,11 @@ package com.cocktail_app.cocktail.Models;
 
 import javax.persistence.*;
 
-@Entity
-@Table
+@Entity(name = "Cocktail")
+@Table(name = "COCKTAIL")
 public class Cocktail {
 
-    private enum Difficulty{
+    public enum Difficulty{
         VERY_EASY,
         EASY,
         MODERATE,
@@ -23,14 +23,19 @@ public class Cocktail {
             strategy = GenerationType.SEQUENCE,
             generator = "cocktail_sequence"
     )
-
+    private int id;
     private String name;
     private String tools;
+    @Column(columnDefinition = "enum")
+    @Enumerated(EnumType.ORDINAL)
     private Difficulty difficulty;
     private String instructions;
     private String tags;
     private String glassType;
     private String iceType;
+
+    // empty constructor
+    Cocktail() {}
 
     // constructor with all items
     public Cocktail(String name, String tools, Difficulty difficulty, String instructions, String tags) {
@@ -47,6 +52,8 @@ public class Cocktail {
         this.difficulty = difficulty;
         this.instructions = instructions;
     }
+
+    public int getId() { return id; }
 
     public String getName() {
         return name;
@@ -74,6 +81,10 @@ public class Cocktail {
 
     public String getIceType() {
         return iceType;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {

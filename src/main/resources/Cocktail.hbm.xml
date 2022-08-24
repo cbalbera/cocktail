@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name = "Cocktail" table = "COCKTAIL">
+    <class name = "com.cocktail_app.cocktail.Models.Cocktail" table = "COCKTAIL">
 
         <meta attribute = "class-description">
             This class contains the attributes of one cocktail.
@@ -17,8 +17,8 @@
         <property name = "name" column = "name" type = "string"/>
         <property name = "tools" column = "tools" type = "string"/> <!--string will contain list of IDs-->
         <property name = "difficulty" column = "difficulty" type = "int"/> <!--int mapped to enum in Java class-->
-        <property name = "instructions" column = "name" type = "string"/>
-        <property name = "tags" column = "name" type = "string"/>
+        <property name = "instructions" column = "instructions" type = "string"/>
+        <property name = "tags" column = "tags" type = "string"/>
         <property name = "glassType" column = "glass_type" type = "string"/>
         <property name = "iceType" column = "ice_type" type = "string"/>
 

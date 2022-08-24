@@ -2,10 +2,10 @@ package com.cocktail_app.cocktail.Models;
 
 import javax.persistence.*;
 
-@Entity
-@Table
+@Entity(name = "Ingredient")
+@Table(name = "INGREDIENT")
 public class Ingredient {
-    private enum ingredientType{
+    public enum ingredientType{
         ALCOHOL,
         LIQUEUR,
         MIXER,
@@ -24,9 +24,15 @@ public class Ingredient {
             strategy = GenerationType.SEQUENCE,
             generator = "cocktail_sequence"
     )
+    private int id;
 
     private String name;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(columnDefinition = "enum")
     private ingredientType type;
+
+    // empty constructor
+    Ingredient() {}
 
     // constructor with all items
     public Ingredient(String name, ingredientType type) {
@@ -39,12 +45,18 @@ public class Ingredient {
         this.name = name;
     }
 
+    public int getId() { return id; }
+
     public String getName() {
         return name;
     }
 
     public ingredientType getType() {
         return type;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
