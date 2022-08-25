@@ -3,7 +3,7 @@ package com.cocktail_app.cocktail.Models;
 import javax.persistence.*;
 
 @Entity(name = "Cocktail")
-@Table(name = "COCKTAIL")
+@Table(name = "COCKTAILS")
 public class Cocktail {
 
     public enum Difficulty{
@@ -14,20 +14,13 @@ public class Cocktail {
     }
 
     @Id
-    @SequenceGenerator(
-            name = "cocktail_sequence",
-            sequenceName = "cocktail_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "cocktail_sequence"
-    )
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="cocktail_id")
     private int id;
     private String name;
     private String tools;
-    @Column(columnDefinition = "enum")
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "difficulty")
     private Difficulty difficulty;
     private String instructions;
     private String tags;
@@ -47,9 +40,8 @@ public class Cocktail {
     }
 
     // constructor with only non-null / required items
-    public Cocktail(String name, Difficulty difficulty, String instructions) {
+    public Cocktail(String name, String instructions) {
         this.name = name;
-        this.difficulty = difficulty;
         this.instructions = instructions;
     }
 

@@ -25,6 +25,15 @@
             cocktailtest321
         </property>
 
+        <property name="hbm2ddl.auto">
+            update
+        </property>
+
+        <!--HQL debugging-->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+
         <!-- List of XML mapping files-->
         <mapping resource="Cocktail.hbm.xml"/>
         <mapping resource="Ingredient.hbm.xml"/>

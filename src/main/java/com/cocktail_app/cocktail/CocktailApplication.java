@@ -33,7 +33,7 @@ public class CocktailApplication {
 		// Add few samples records in database
 		Integer empID1 = CA.addSample("Zara");
 		Integer empID2 = CA.addSample("Daisy");
-		Integer empID3 = CA.addSample("John");
+		Integer empID3 = CA.addSample("Caleb");
 
 		// List down all the samples
 		CA.listEmployees();
@@ -48,8 +48,8 @@ public class CocktailApplication {
 		CA.listEmployees();
 
 		// add a test cocktail
-		Cocktail testCocktail = new Cocktail("shot_tequila",
-				Cocktail.Difficulty.VERY_EASY, "pour a shot of tequila");
+		Cocktail testCocktail = new Cocktail("shot_vodka",
+				"pour a shot of vodka");
 		CA.addCocktail(testCocktail);
 	}
 
@@ -62,7 +62,8 @@ public class CocktailApplication {
 		System.out.println("cocktail is " + cocktail);
 		try {
 			tx = session.beginTransaction();
-			session.save(cocktail);
+			//session.save(cocktail);
+			ID = (Integer) session.save(cocktail);
 			System.out.println("cocktail successfully added");
 			tx.commit();
 		} catch (HibernateException e) {

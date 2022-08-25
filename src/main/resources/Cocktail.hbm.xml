@@ -4,13 +4,13 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name = "com.cocktail_app.cocktail.Models.Cocktail" table = "COCKTAIL">
+    <class name = "com.cocktail_app.cocktail.Models.Cocktail" table = "COCKTAILS">
 
         <meta attribute = "class-description">
             This class contains the attributes of one cocktail.
         </meta>
 
-        <id name = "id" type = "int" column = "cocktailId">
+        <id name = "id" type = "int" column = "cocktail_id">
             <generator class="native"/>
         </id>
 
