@@ -25,6 +25,7 @@
             cocktailtest321
         </property>
 
+        <!--When creating new tables: change 'update' to 'create'-->
         <property name="hbm2ddl.auto">
             update
         </property>
