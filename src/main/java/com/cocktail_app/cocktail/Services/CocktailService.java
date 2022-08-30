@@ -1,13 +1,16 @@
 package com.cocktail_app.cocktail.Services;
 
 import com.cocktail_app.cocktail.Models.Cocktail;
+import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Repositories.CocktailRepo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 @Component
@@ -31,15 +34,25 @@ public class CocktailService {
     }
 
     public List<Cocktail> getCocktails() {
-        return cocktailRepo.findAll();
+        // this method may get expensive - O(N) time and space where N = # of cocktails in DB
+        // the likelihood it is used frequently is relatively low, but something to monitor
+        List<CocktailDB> cocktails = cocktailRepo.findAll();
+        List<Cocktail> output = new ArrayList<Cocktail>();
+        ListIterator<CocktailDB> Iterator = cocktails.listIterator();
+        while (Iterator.hasNext()) {
+            Cocktail cocktail = convertCocktailDBToCocktail(Iterator.next());
+            output.add(cocktail);
+        }
+        return output;
     }
 
-    public Cocktail addCocktail(Cocktail cocktail) {
-        cocktailRepo.save(cocktail);
-        return cocktail;
+    public CocktailDB addCocktail(Cocktail cocktail) {
+        CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
+        cocktailRepo.save(cocktailDB);
+        return cocktailDB;
     }
 
-    public List<Cocktail> addCocktails(List<Cocktail> cocktails) {
+    public List<CocktailDB> addCocktails(List<CocktailDB> cocktails) {
         cocktailRepo.saveAll(cocktails);
         return cocktails;
     }
@@ -49,9 +62,10 @@ public class CocktailService {
     }
 
     public Cocktail findCocktailById(Long id) {
-        Optional<Cocktail> cocktailOptional = cocktailRepo.findById(id);
+        Optional<CocktailDB> cocktailOptional = cocktailRepo.findById(id);
         if (cocktailOptional.isPresent()) {
-            return cocktailOptional.get();
+            CocktailDB cocktailDB = cocktailOptional.get();
+            return convertCocktailDBToCocktail(cocktailDB);
         } else {
             return null;
         }
@@ -61,8 +75,71 @@ public class CocktailService {
         return cocktailRepo.findByName(name);
     }
 
-    public Cocktail updateCocktail(Cocktail cocktail) {
-        cocktailRepo.save(cocktail);
-        return cocktail;
+    public CocktailDB updateCocktail(Cocktail cocktail) {
+        CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
+        cocktailRepo.save(cocktailDB);
+        return cocktailDB;
+    }
+
+    public CocktailDB convertCocktailToCocktailDB(Cocktail cocktail) {
+        int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
+        return new CocktailDB(
+                cocktail.getName(),
+                cocktail.getTools(),
+                difficulty,
+                cocktail.getInstructions(),
+                cocktail.getTags()
+        );
+    }
+
+    public Cocktail convertCocktailDBToCocktail(CocktailDB cocktail) {
+        Cocktail.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
+        return new Cocktail(
+                cocktail.getName(),
+                cocktail.getTools(),
+                difficulty,
+                cocktail.getInstructions(),
+                cocktail.getTags()
+        );
+    }
+
+    public int difficultyEnumToInt(Cocktail.Difficulty difficulty) {
+        int output = 0;
+        switch(difficulty) {
+            case VERY_EASY:
+                break;
+            case EASY:
+                output = 1;
+                break;
+            case MODERATE:
+                output = 2;
+                break;
+            case DIFFICULT:
+                output = 3;
+                break;
+            default:
+                break;
+        }
+        return output;
+    }
+
+    public Cocktail.Difficulty difficultyIntToEnum(int difficulty) {
+        Cocktail.Difficulty output = Cocktail.Difficulty.VERY_EASY;
+        switch(difficulty) {
+            case 0:
+                break;
+            case 1:
+                output = Cocktail.Difficulty.EASY;
+                break;
+            case 2:
+                output = Cocktail.Difficulty.MODERATE;
+                break;
+            case 3:
+                output = Cocktail.Difficulty.DIFFICULT;
+                break;
+            default:
+                break;
+        }
+        return output;
     }
 }

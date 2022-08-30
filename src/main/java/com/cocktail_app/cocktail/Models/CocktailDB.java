@@ -1,28 +1,26 @@
 package com.cocktail_app.cocktail.Models;
 
-public class Cocktail {
+import javax.persistence.*;
 
-    public enum Difficulty{
-        VERY_EASY,
-        EASY,
-        MODERATE,
-        DIFFICULT
-    }
-
+public class CocktailDB {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="cocktail_id")
     private int id;
     private String name;
     private String tools;
-    private Difficulty difficulty;
+
+    private int difficulty;
     private String instructions;
     private String tags;
     private String glassType;
     private String iceType;
 
     // empty constructor
-    Cocktail() {}
+    CocktailDB() {}
 
     // constructor with all items
-    public Cocktail(String name, String tools, Difficulty difficulty, String instructions, String tags) {
+    public CocktailDB(String name, String tools, int difficulty, String instructions, String tags) {
         this.name = name;
         this.tools = tools;
         this.difficulty = difficulty;
@@ -31,7 +29,7 @@ public class Cocktail {
     }
 
     // constructor with only non-null / required items
-    public Cocktail(String name, String instructions) {
+    public CocktailDB(String name, String instructions) {
         this.name = name;
         this.instructions = instructions;
     }
@@ -46,7 +44,7 @@ public class Cocktail {
         return tools;
     }
 
-    public Difficulty getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 
@@ -78,7 +76,7 @@ public class Cocktail {
         this.tools = tools;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 

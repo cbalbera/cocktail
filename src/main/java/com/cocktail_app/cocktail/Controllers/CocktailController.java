@@ -1,6 +1,7 @@
 package com.cocktail_app.cocktail.Controllers;
 
 import com.cocktail_app.cocktail.Models.Cocktail;
+import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Services.CocktailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,14 +34,14 @@ public class CocktailController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Cocktail> addCocktail(Cocktail cocktail) {
-        Cocktail newCocktail = this.cocktailService.addCocktail(cocktail);
+    public ResponseEntity<CocktailDB> addCocktail(Cocktail cocktail) {
+        CocktailDB newCocktail = this.cocktailService.addCocktail(cocktail);
         return new ResponseEntity<>(newCocktail,HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Cocktail> updateCocktail(Cocktail cocktail) {
-        Cocktail newCocktail = this.cocktailService.updateCocktail(cocktail);
-        return new ResponseEntity<>(newCocktail,HttpStatus.CREATED);
+    public ResponseEntity<CocktailDB> updateCocktail(Cocktail cocktail) {
+        CocktailDB newCocktail = this.cocktailService.updateCocktail(cocktail);
+        return new ResponseEntity<>(newCocktail,HttpStatus.OK);
     }
 }

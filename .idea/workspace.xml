@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="attempt to add Hibernate db access to Cocktail class">
+    <list default="true" id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="created service, repository, and REST controller">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Cocktail.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Cocktail.hbm.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hibernate.cfg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/CocktailApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/CocktailApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/CocktailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/CocktailController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Cocktail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Cocktail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Ingredient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Ingredient.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Ingredient.hbm.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/CocktailRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/CocktailRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +136,28 @@
       <option name="presentableId" value="Default" />
       <updated>1660684631958</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added class config files and testing push to db via Hibernate">
+      <created>1661377678042</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1661377678043</updated>
+    </task>
+    <task id="LOCAL-00003" summary="cocktail table connected via Hibernate">
+      <created>1661445019759</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1661445019762</updated>
+    </task>
+    <task id="LOCAL-00004" summary="created service, repository, and REST controller">
+      <created>1661801826253</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1661801826253</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,6 +173,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="added class config files and testing push to db via Hibernate" />
+    <MESSAGE value="cocktail table connected via Hibernate" />
+    <MESSAGE value="created service, repository, and REST controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="created service, repository, and REST controller" />
   </component>
 </project>
