@@ -1,6 +1,6 @@
 package com.cocktail_app.cocktail.Services;
 
-import com.cocktail_app.cocktail.Models.Cocktail;
+import com.cocktail_app.cocktail.Models.CocktailDTO;
 import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Repositories.CocktailRepo;
 import org.hibernate.SessionFactory;
@@ -33,20 +33,20 @@ public class CocktailService {
         this.cocktailRepo = cocktailRepo;
     }
 
-    public List<Cocktail> getCocktails() {
+    public List<CocktailDTO> getCocktails() {
         // this method may get expensive - O(N) time and space where N = # of cocktails in DB
         // the likelihood it is used frequently is relatively low, but something to monitor
         List<CocktailDB> cocktails = cocktailRepo.findAll();
-        List<Cocktail> output = new ArrayList<Cocktail>();
+        List<CocktailDTO> output = new ArrayList<CocktailDTO>();
         ListIterator<CocktailDB> Iterator = cocktails.listIterator();
         while (Iterator.hasNext()) {
-            Cocktail cocktail = convertCocktailDBToCocktail(Iterator.next());
+            CocktailDTO cocktail = convertCocktailDBToCocktail(Iterator.next());
             output.add(cocktail);
         }
         return output;
     }
 
-    public CocktailDB addCocktail(Cocktail cocktail) {
+    public CocktailDB addCocktail(CocktailDTO cocktail) {
         CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
         cocktailRepo.save(cocktailDB);
         return cocktailDB;
@@ -61,7 +61,7 @@ public class CocktailService {
         cocktailRepo.deleteById(id);
     }
 
-    public Cocktail findCocktailById(Long id) {
+    public CocktailDTO findCocktailById(Long id) {
         Optional<CocktailDB> cocktailOptional = cocktailRepo.findById(id);
         if (cocktailOptional.isPresent()) {
             CocktailDB cocktailDB = cocktailOptional.get();
@@ -71,17 +71,17 @@ public class CocktailService {
         }
     }
 
-    public List<Cocktail> findCocktailsByName(String name) {
+    public List<CocktailDB> findCocktailsByName(String name) {
         return cocktailRepo.findByName(name);
     }
 
-    public CocktailDB updateCocktail(Cocktail cocktail) {
+    public CocktailDB updateCocktail(CocktailDTO cocktail) {
         CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
         cocktailRepo.save(cocktailDB);
         return cocktailDB;
     }
 
-    public CocktailDB convertCocktailToCocktailDB(Cocktail cocktail) {
+    public CocktailDB convertCocktailToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         return new CocktailDB(
                 cocktail.getName(),
@@ -92,9 +92,9 @@ public class CocktailService {
         );
     }
 
-    public Cocktail convertCocktailDBToCocktail(CocktailDB cocktail) {
-        Cocktail.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
-        return new Cocktail(
+    public CocktailDTO convertCocktailDBToCocktail(CocktailDB cocktail) {
+        CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
+        return new CocktailDTO(
                 cocktail.getName(),
                 cocktail.getTools(),
                 difficulty,
@@ -103,7 +103,7 @@ public class CocktailService {
         );
     }
 
-    public int difficultyEnumToInt(Cocktail.Difficulty difficulty) {
+    public int difficultyEnumToInt(CocktailDTO.Difficulty difficulty) {
         int output = 0;
         switch(difficulty) {
             case VERY_EASY:
@@ -123,19 +123,19 @@ public class CocktailService {
         return output;
     }
 
-    public Cocktail.Difficulty difficultyIntToEnum(int difficulty) {
-        Cocktail.Difficulty output = Cocktail.Difficulty.VERY_EASY;
+    public CocktailDTO.Difficulty difficultyIntToEnum(int difficulty) {
+        CocktailDTO.Difficulty output = CocktailDTO.Difficulty.VERY_EASY;
         switch(difficulty) {
             case 0:
                 break;
             case 1:
-                output = Cocktail.Difficulty.EASY;
+                output = CocktailDTO.Difficulty.EASY;
                 break;
             case 2:
-                output = Cocktail.Difficulty.MODERATE;
+                output = CocktailDTO.Difficulty.MODERATE;
                 break;
             case 3:
-                output = Cocktail.Difficulty.DIFFICULT;
+                output = CocktailDTO.Difficulty.DIFFICULT;
                 break;
             default:
                 break;

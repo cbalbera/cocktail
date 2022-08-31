@@ -1,6 +1,6 @@
 package com.cocktail_app.cocktail.Models;
 
-public class Cocktail {
+public class CocktailDTO {
 
     public enum Difficulty{
         VERY_EASY,
@@ -17,12 +17,17 @@ public class Cocktail {
     private String tags;
     private String glassType;
     private String iceType;
+    //future idea
+    // private boolean isParent;
+    // private List<Integer> childrenIDs;
+    // private boolean isChild;
+    // private integer parentID;
 
     // empty constructor
-    Cocktail() {}
+    CocktailDTO() {}
 
     // constructor with all items
-    public Cocktail(String name, String tools, Difficulty difficulty, String instructions, String tags) {
+    public CocktailDTO(String name, String tools, Difficulty difficulty, String instructions, String tags) {
         this.name = name;
         this.tools = tools;
         this.difficulty = difficulty;
@@ -31,7 +36,7 @@ public class Cocktail {
     }
 
     // constructor with only non-null / required items
-    public Cocktail(String name, String instructions) {
+    public CocktailDTO(String name, String instructions) {
         this.name = name;
         this.instructions = instructions;
     }

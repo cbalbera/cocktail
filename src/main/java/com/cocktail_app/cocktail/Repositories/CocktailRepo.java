@@ -1,10 +1,6 @@
 package com.cocktail_app.cocktail.Repositories;
 
-import com.cocktail_app.cocktail.Models.Cocktail;
 import com.cocktail_app.cocktail.Models.CocktailDB;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +14,6 @@ public interface CocktailRepo extends JpaRepository<CocktailDB,Long> {
     // USE SERVICE CLASS FUNCTIONS WHERE NEC TO MODIFY DATA TYPES, ETC
     // GOAL: CONTROLLER CLASS SHOULD BE AS SIMPLE AS POSSIBLE
 
-    List<Cocktail> findByName(String name);
+    List<CocktailDB> findByName(String name);
 
 }

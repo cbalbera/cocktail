@@ -2,6 +2,8 @@ package com.cocktail_app.cocktail.Models;
 
 import javax.persistence.*;
 
+@Entity(name = "CocktailDB")
+@Table(name = "Cocktails")
 public class CocktailDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

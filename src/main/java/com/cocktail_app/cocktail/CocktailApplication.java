@@ -3,8 +3,6 @@ package com.cocktail_app.cocktail;
 import java.util.List;
 import java.util.Iterator;
 
-import com.cocktail_app.cocktail.Models.Cocktail;
-import com.cocktail_app.cocktail.Models.Ingredient;
 import com.cocktail_app.cocktail.Models.Sample;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -18,9 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CocktailApplication {
 	private static SessionFactory factory;
 	public static void main(String[] args) {
-		//SpringApplication.run(CocktailApplication.class, args);
-
-
+		/*
 		try {
 			factory = new Configuration().configure().buildSessionFactory();
 		} catch (Throwable ex) {
@@ -46,6 +42,8 @@ public class CocktailApplication {
 
 		// List down new list of the samples
 		CA.listEmployees();
+		*/
+		SpringApplication.run(CocktailApplication.class, args);
 
 	}
 
