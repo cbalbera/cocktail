@@ -9,7 +9,7 @@ public class CocktailDTO {
         DIFFICULT
     }
 
-    private int id;
+    private Long id;
     private String name;
     private String tools;
     private Difficulty difficulty;
@@ -17,22 +17,28 @@ public class CocktailDTO {
     private String tags;
     private String glassType;
     private String iceType;
-    //future idea
-    // private boolean isParent;
-    // private List<Integer> childrenIDs;
-    // private boolean isChild;
-    // private integer parentID;
+    private Boolean isParent;
+    private String childrenIDs;
+    private Boolean isChild;
+    private Long parentID;
 
     // empty constructor
     CocktailDTO() {}
 
     // constructor with all items
-    public CocktailDTO(String name, String tools, Difficulty difficulty, String instructions, String tags) {
+    public CocktailDTO(Long id, String name, String tools, Difficulty difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIDs, Boolean isChild, Long parentID) {
+        this.id = id;
         this.name = name;
         this.tools = tools;
         this.difficulty = difficulty;
         this.instructions = instructions;
         this.tags = tags;
+        this.glassType = glassType;
+        this.iceType = iceType;
+        this.isParent = isParent;
+        this.childrenIDs = childrenIDs;
+        this.isChild = isChild;
+        this.parentID = parentID;
     }
 
     // constructor with only non-null / required items
@@ -41,7 +47,7 @@ public class CocktailDTO {
         this.instructions = instructions;
     }
 
-    public int getId() { return id; }
+    public Long getId() { return id; }
 
     public String getName() {
         return name;
@@ -71,7 +77,7 @@ public class CocktailDTO {
         return iceType;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,6 +107,38 @@ public class CocktailDTO {
 
     public void setIceType(String iceType) {
         this.iceType = iceType;
+    }
+
+    public Boolean getIsParent() {
+        return isParent;
+    }
+
+    public void setIsParent(Boolean parent) {
+        isParent = parent;
+    }
+
+    public String getChildrenIDs() {
+        return childrenIDs;
+    }
+
+    public void setChildrenIDs(String childrenIDs) {
+        this.childrenIDs = childrenIDs;
+    }
+
+    public Boolean getIsChild() {
+        return isChild;
+    }
+
+    public void setIsChild(Boolean child) {
+        isChild = child;
+    }
+
+    public Long getParentID() {
+        return parentID;
+    }
+
+    public void setParentID(Long parentID) {
+        this.parentID = parentID;
     }
 
     @Override

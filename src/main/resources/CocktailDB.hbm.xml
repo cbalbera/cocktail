@@ -21,6 +21,10 @@
         <property name = "tags" column = "tags" type = "string"/>
         <property name = "glassType" column = "glass_type" type = "string"/>
         <property name = "iceType" column = "ice_type" type = "string"/>
+        <property name = "isParent" column = "isParent" type = "int"/> <!--boolean mapped to numeric-->
+        <property name = "childrenIDs" column = "childrenIDs" type = "string"/> <!--string will contain list of IDs-->
+        <property name = "isChild" column = "isChild" type = "int"/> <!--boolean mapped to numeric-->
+        <property name = "parentID" column = "parentID" type = "int"/>
 
     </class>
 </hibernate-mapping>

@@ -47,6 +47,22 @@ public class CocktailController {
         return new ResponseEntity<>(newCocktail,HttpStatus.OK);
     }
 
+    // very dangerous
+    // if using this store pwd in a protected file
+    // and/or just delete this function once any real data have been entered
+    /*
+    @DeleteMapping("/deleteAll/{password}")
+    public ResponseEntity<Boolean> clearCocktails(@PathVariable String password) {
+        if(password == "[password]") {
+            this.cocktailService.deleteCocktails();
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    */
+
     //TODO
     //public List<Cocktail> GetMakeableCocktails
     // this will likely have to be called strategically rather than upon page open

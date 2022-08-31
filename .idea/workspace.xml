@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="created service, repository, and REST controller">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/CocktailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/CocktailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Cocktail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Cocktail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/CocktailRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/CocktailRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/CocktailDB.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/CocktailDB.hbm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Ingredient.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/IngredientDB.hbm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

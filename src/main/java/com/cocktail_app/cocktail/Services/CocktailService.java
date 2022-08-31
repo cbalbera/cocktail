@@ -61,6 +61,11 @@ public class CocktailService {
         cocktailRepo.deleteById(id);
     }
 
+    //dangerous
+    public void deleteCocktails() {
+        cocktailRepo.deleteAll();
+    }
+
     public CocktailDTO findCocktailById(Long id) {
         Optional<CocktailDB> cocktailOptional = cocktailRepo.findById(id);
         if (cocktailOptional.isPresent()) {
@@ -84,22 +89,36 @@ public class CocktailService {
     public CocktailDB convertCocktailToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         return new CocktailDB(
+                cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getTools(),
                 difficulty,
                 cocktail.getInstructions(),
-                cocktail.getTags()
+                cocktail.getTags(),
+                cocktail.getGlassType(),
+                cocktail.getIceType(),
+                cocktail.getIsParent(),
+                cocktail.getChildrenIDs(),
+                cocktail.getIsChild(),
+                cocktail.getParentID()
         );
     }
 
     public CocktailDTO convertCocktailDBToCocktail(CocktailDB cocktail) {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
         return new CocktailDTO(
+                cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getTools(),
                 difficulty,
                 cocktail.getInstructions(),
-                cocktail.getTags()
+                cocktail.getTags(),
+                cocktail.getGlassType(),
+                cocktail.getIceType(),
+                cocktail.getIsParent(),
+                cocktail.getChildrenIDs(),
+                cocktail.getIsChild(),
+                cocktail.getParentID()
         );
     }
 
