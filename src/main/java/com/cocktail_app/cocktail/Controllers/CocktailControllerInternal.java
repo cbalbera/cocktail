@@ -33,7 +33,7 @@ public class CocktailControllerInternal {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteCocktail(@PathVariable Long id) {
-        if(true) { // here, check if id is in db
+        if(true) { //TODO: here, check if id is in db
             this.cocktailService.deleteCocktail(id);
             return new ResponseEntity<>(true,HttpStatus.OK);
         } else {

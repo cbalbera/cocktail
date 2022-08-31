@@ -33,21 +33,6 @@ public class CocktailController {
         return this.cocktailService.findCocktailById(id);
     }
 
-    // eventually, this will be moved to a different (internal- or bartender-facing) controller
-    @PostMapping("/add")
-    public ResponseEntity<CocktailDB> addCocktail(@RequestBody CocktailDTO cocktail) {
-        CocktailDB newCocktail = this.cocktailService.addCocktail(cocktail);
-        return new ResponseEntity<>(newCocktail,HttpStatus.CREATED);
-    }
-
-    // eventually, this will be moved to a different (internal- or bartender-facing) controller
-    @PutMapping("/update")
-    public ResponseEntity<CocktailDB> updateCocktail(@RequestBody CocktailDTO cocktail) {
-        CocktailDB newCocktail = this.cocktailService.updateCocktail(cocktail);
-        return new ResponseEntity<>(newCocktail,HttpStatus.OK);
-    }
-
-
     //TODO
     //public List<Cocktail> GetMakeableCocktails
     // this will likely have to be called strategically rather than upon page open
