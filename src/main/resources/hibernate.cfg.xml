@@ -25,6 +25,7 @@
         <!-- List of XML mapping files-->
         <mapping resource="CocktailDB.hbm.xml"/>
         <mapping resource="IngredientDB.hbm.xml"/>
+        <mapping resource="CocktailIngredientRelationship.hbm.xml"/>
         <!--<mapping resource="SampleObject.hbm.xml"/>-->
 
     </session-factory>
