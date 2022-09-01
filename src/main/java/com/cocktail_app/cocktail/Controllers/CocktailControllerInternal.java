@@ -20,15 +20,19 @@ public class CocktailControllerInternal {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CocktailDB> addCocktail(@RequestBody CocktailDTO cocktail) {
+    public ResponseEntity<CocktailDB> addCocktail(@RequestBody CocktailDB cocktail) {
         CocktailDB newCocktail = this.cocktailService.addCocktail(cocktail);
         return new ResponseEntity<>(newCocktail, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<CocktailDB> updateCocktail(@RequestBody CocktailDTO cocktail) {
-        CocktailDB newCocktail = this.cocktailService.updateCocktail(cocktail);
-        return new ResponseEntity<>(newCocktail,HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CocktailDB> updateCocktail(@PathVariable Long id, @RequestBody CocktailDTO cocktail) {
+        if(true) { //TODO: here, check if id is in db
+            CocktailDB newCocktail = this.cocktailService.updateCocktail(cocktail);
+            return new ResponseEntity<>(newCocktail, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/delete/{id}")

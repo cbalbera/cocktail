@@ -1,5 +1,7 @@
 package com.cocktail_app.cocktail.Models;
 
+import java.util.List;
+
 public class CocktailDTO {
 
     public enum Difficulty{
@@ -13,7 +15,7 @@ public class CocktailDTO {
     private String name;
     private String tools;
     private Difficulty difficulty;
-    private String instructions;
+    private List<String> instructions;
     private String tags;
     private String glassType;
     private String iceType;
@@ -26,7 +28,7 @@ public class CocktailDTO {
     CocktailDTO() {}
 
     // constructor with all items
-    public CocktailDTO(Long id, String name, String tools, Difficulty difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIDs, Boolean isChild, Long parentID) {
+    public CocktailDTO(Long id, String name, String tools, Difficulty difficulty, List<String> instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIDs, Boolean isChild, Long parentID) {
         this.id = id;
         this.name = name;
         this.tools = tools;
@@ -42,7 +44,7 @@ public class CocktailDTO {
     }
 
     // constructor with only non-null / required items
-    public CocktailDTO(String name, String instructions) {
+    public CocktailDTO(String name, List<String> instructions) {
         this.name = name;
         this.instructions = instructions;
     }
@@ -61,7 +63,7 @@ public class CocktailDTO {
         return difficulty;
     }
 
-    public String getInstructions() {
+    public List<String> getInstructions() {
         return instructions;
     }
 
@@ -75,6 +77,22 @@ public class CocktailDTO {
 
     public String getIceType() {
         return iceType;
+    }
+
+    public Boolean getIsParent() {
+        return isParent;
+    }
+
+    public String getChildrenIDs() {
+        return childrenIDs;
+    }
+
+    public Boolean getIsChild() {
+        return isChild;
+    }
+
+    public Long getParentID() {
+        return parentID;
     }
 
     public void setId(Long id) {
@@ -93,7 +111,7 @@ public class CocktailDTO {
         this.difficulty = difficulty;
     }
 
-    public void setInstructions(String instructions) {
+    public void setInstructions(List<String> instructions) {
         this.instructions = instructions;
     }
 
@@ -109,32 +127,16 @@ public class CocktailDTO {
         this.iceType = iceType;
     }
 
-    public Boolean getIsParent() {
-        return isParent;
-    }
-
     public void setIsParent(Boolean parent) {
         isParent = parent;
-    }
-
-    public String getChildrenIDs() {
-        return childrenIDs;
     }
 
     public void setChildrenIDs(String childrenIDs) {
         this.childrenIDs = childrenIDs;
     }
 
-    public Boolean getIsChild() {
-        return isChild;
-    }
-
     public void setIsChild(Boolean child) {
         isChild = child;
-    }
-
-    public Long getParentID() {
-        return parentID;
     }
 
     public void setParentID(Long parentID) {

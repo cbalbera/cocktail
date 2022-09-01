@@ -92,6 +92,22 @@ public class CocktailDB {
         return iceType;
     }
 
+    public Boolean getIsParent() {
+        return isParent;
+    }
+
+    public String getChildrenIDs() {
+        return childrenIDs;
+    }
+
+    public Boolean getIsChild() {
+        return isChild;
+    }
+
+    public Long getParentID() {
+        return parentID;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -124,32 +140,16 @@ public class CocktailDB {
         this.iceType = iceType;
     }
 
-    public Boolean getIsParent() {
-        return isParent;
-    }
-
     public void setIsParent(Boolean parent) {
         isParent = parent;
-    }
-
-    public String getChildrenIDs() {
-        return childrenIDs;
     }
 
     public void setChildrenIDs(String childrenIDs) {
         this.childrenIDs = childrenIDs;
     }
 
-    public Boolean getIsChild() {
-        return isChild;
-    }
-
     public void setIsChild(Boolean child) {
         isChild = child;
-    }
-
-    public Long getParentID() {
-        return parentID;
     }
 
     public void setParentID(Long parentID) {

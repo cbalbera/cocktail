@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
 
+import static java.lang.Character.isDigit;
+
 @Component
 public class CocktailService {
-    //TODO
-    // TRANSFORMATIONS/LOGIC BETWEEN FRONT-FACING DATA TRANSFER OBJECTS AND DB OBJECTS
-    // FOR EX: CONVERSIONS BW ENUM AND INT
 
     public CocktailRepo cocktailRepo;
 
     private SessionFactory hibernateFactory;
 
-    // TODO: TEST ME
     @Autowired
     public CocktailService(EntityManagerFactory factory, CocktailRepo cocktailRepo) {
         if(factory.unwrap(SessionFactory.class) == null){
@@ -40,16 +40,17 @@ public class CocktailService {
         List<CocktailDTO> output = new ArrayList<CocktailDTO>();
         ListIterator<CocktailDB> Iterator = cocktails.listIterator();
         while (Iterator.hasNext()) {
-            CocktailDTO cocktail = convertCocktailDBToCocktail(Iterator.next());
+            CocktailDTO cocktail = convertCocktailDBToCocktailDTO(Iterator.next());
             output.add(cocktail);
         }
         return output;
     }
 
-    public CocktailDB addCocktail(CocktailDTO cocktail) {
-        CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
-        cocktailRepo.save(cocktailDB);
-        return cocktailDB;
+
+    public CocktailDB addCocktail(CocktailDB cocktail) {
+        cocktail.setInstructions(addInstructionsDelimiter(cocktail.getInstructions()));
+        cocktailRepo.save(cocktail);
+        return cocktail;
     }
 
     public List<CocktailDB> addCocktails(List<CocktailDB> cocktails) {
@@ -70,7 +71,7 @@ public class CocktailService {
         Optional<CocktailDB> cocktailOptional = cocktailRepo.findById(id);
         if (cocktailOptional.isPresent()) {
             CocktailDB cocktailDB = cocktailOptional.get();
-            return convertCocktailDBToCocktail(cocktailDB);
+            return convertCocktailDBToCocktailDTO(cocktailDB);
         } else {
             return null;
         }
@@ -88,12 +89,13 @@ public class CocktailService {
 
     public CocktailDB convertCocktailToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
+        String instructions = instructionsToString(cocktail.getInstructions());
         return new CocktailDB(
                 cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getTools(),
                 difficulty,
-                cocktail.getInstructions(),
+                instructions,
                 cocktail.getTags(),
                 cocktail.getGlassType(),
                 cocktail.getIceType(),
@@ -104,14 +106,15 @@ public class CocktailService {
         );
     }
 
-    public CocktailDTO convertCocktailDBToCocktail(CocktailDB cocktail) {
+    public CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
+        List<String> instructions = parseCocktailInstructions(cocktail.getInstructions());
         return new CocktailDTO(
                 cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getTools(),
                 difficulty,
-                cocktail.getInstructions(),
+                instructions,
                 cocktail.getTags(),
                 cocktail.getGlassType(),
                 cocktail.getIceType(),
@@ -160,5 +163,47 @@ public class CocktailService {
                 break;
         }
         return output;
+    }
+
+    public List<String> parseCocktailInstructions(String instructions) {
+        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
+        // note that this is handled in instructionsToString below, so only necessary for new instructions input
+        List<String> output = new ArrayList<String>();
+        char delimiter = '~';
+        int priorLineStart = 0, i = 0, n = instructions.length();
+        // add instructions line
+        for(; i < n; i++) {
+            if (instructions.charAt(i) == delimiter) {
+                String toAdd = instructions.substring(priorLineStart,i);
+                output.add(toAdd);
+                priorLineStart = i+1;
+            }
+        }
+        // add final instructions line, which will end at end of String and not have a delimiter
+        String toAdd = instructions.substring(priorLineStart,i);
+        output.add(toAdd);
+        return output;
+    }
+
+    public String instructionsToString(List<String> instructions) {
+        String output = String.join("~",instructions);
+        return output;
+    }
+
+    // this parsing method may need to be made more robust as time goes on
+    // it is also not efficient at present - O(N) time and O(N) space, really 2N additional space
+    public String addInstructionsDelimiter(String instructions) {
+        int n = instructions.length();
+        if (n < 4) { return instructions; }
+        char[] instructionsChars = instructions.toCharArray();
+        char period = '.';
+        char tilde = '~';
+        // this makes the assumption that a number followed by a period signifies the end of a line
+        for (int i = 3; i < n; i++) {
+            if (isDigit(instructionsChars[i-1]) && instructionsChars[i] == period) {
+                instructionsChars[i-2] = tilde;
+            }
+        }
+        return new String(instructionsChars);
     }
 }
