@@ -46,8 +46,6 @@ public class CocktailIngredientRelationshipService {
         return output;
     }
 
-    //TODO: as with above,
-    // handle case where cocktailId search returns an empty list
     public List<Long> getIngredientsByCocktailId(Long cocktailId) {
         List<CocktailIngredientRelationship> relationships = relationshipRepo.findByCocktailId(cocktailId);
         if (relationships == null) {
