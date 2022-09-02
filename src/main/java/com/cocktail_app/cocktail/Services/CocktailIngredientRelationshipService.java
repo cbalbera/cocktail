@@ -35,8 +35,9 @@ public class CocktailIngredientRelationshipService {
 
     public List<Long> getCocktailsByIngredientId(Long ingredientId) {
         List<CocktailIngredientRelationship> relationships = relationshipRepo.findByIngredientId(ingredientId);
-        System.out.println("relationships:");
-        System.out.println(relationships);
+        if (relationships == null) {
+            return null;
+        }
         List<Long> output = new ArrayList<Long>();
         ListIterator<CocktailIngredientRelationship> Iterator = relationships.listIterator();
         while (Iterator.hasNext()) {
@@ -45,10 +46,13 @@ public class CocktailIngredientRelationshipService {
         return output;
     }
 
+    //TODO: as with above,
+    // handle case where cocktailId search returns an empty list
     public List<Long> getIngredientsByCocktailId(Long cocktailId) {
         List<CocktailIngredientRelationship> relationships = relationshipRepo.findByCocktailId(cocktailId);
-        System.out.println("relationships:");
-        System.out.println(relationships);
+        if (relationships == null) {
+            return null;
+        }
         List<Long> output = new ArrayList<Long>();
         ListIterator<CocktailIngredientRelationship> Iterator = relationships.listIterator();
         while (Iterator.hasNext()) {
