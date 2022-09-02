@@ -1,14 +1,17 @@
 package com.cocktail_app.cocktail.Services;
 
 import com.cocktail_app.cocktail.Models.CocktailIngredientRelationship;
+import com.cocktail_app.cocktail.Models.IngredientDB;
 import com.cocktail_app.cocktail.Repositories.CocktailIngredientRelationshipRepo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 @Component
 public class CocktailIngredientRelationshipService {
@@ -31,11 +34,27 @@ public class CocktailIngredientRelationshipService {
     }
 
     public List<Long> getCocktailsByIngredientId(Long ingredientId) {
-        return relationshipRepo.findByCocktailId(ingredientId);
+        List<CocktailIngredientRelationship> relationships = relationshipRepo.findByIngredientId(ingredientId);
+        System.out.println("relationships:");
+        System.out.println(relationships);
+        List<Long> output = new ArrayList<Long>();
+        ListIterator<CocktailIngredientRelationship> Iterator = relationships.listIterator();
+        while (Iterator.hasNext()) {
+            output.add(Iterator.next().getCocktailId());
+        }
+        return output;
     }
 
     public List<Long> getIngredientsByCocktailId(Long cocktailId) {
-        return relationshipRepo.findByIngredientId(cocktailId);
+        List<CocktailIngredientRelationship> relationships = relationshipRepo.findByCocktailId(cocktailId);
+        System.out.println("relationships:");
+        System.out.println(relationships);
+        List<Long> output = new ArrayList<Long>();
+        ListIterator<CocktailIngredientRelationship> Iterator = relationships.listIterator();
+        while (Iterator.hasNext()) {
+            output.add(Iterator.next().getIngredientId());
+        }
+        return output;
     }
 
     public CocktailIngredientRelationship addRelationshipObject(CocktailIngredientRelationship relationship) {

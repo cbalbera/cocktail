@@ -34,4 +34,19 @@ public class CocktailIngredientRelationshipController {
         this.relationshipService.addIngredientsToOneCocktail(cocktailId,ingredientIds);
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
+
+    @GetMapping("/all")
+    public List<CocktailIngredientRelationship> getRelationships() {
+        return this.relationshipService.getRelationships();
+    }
+
+    @GetMapping("/cocktail/{cocktailId}")
+    public List<Long> getIngredientsByCocktailId(@PathVariable Long cocktailId) {
+        return this.relationshipService.getIngredientsByCocktailId(cocktailId);
+    }
+
+    @GetMapping("/ingredient/{ingredientId}")
+    public List<Long> getCocktailsByIngredientId(@PathVariable Long ingredientId) {
+        return this.relationshipService.getCocktailsByIngredientId(ingredientId);
+    }
 }

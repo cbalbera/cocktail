@@ -16,7 +16,9 @@ public class CocktailIngredientRelationship {
             generator = "cocktail_sequence"
     )
     private Long id;
+    @Column(name="cocktailId")
     private Long cocktailId;
+    @Column(name="ingredientId")
     private Long ingredientId;
 
     //empty constructor
