@@ -23,13 +23,14 @@ public class CocktailIngredientRelationshipController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CocktailIngredientRelationship> addRelationship(@RequestBody Long cocktailId, Long ingredientId) {
-        CocktailIngredientRelationship newRelationship = this.relationshipService.addRelationship(cocktailId,ingredientId);
+    public ResponseEntity<CocktailIngredientRelationship> addRelationship(@RequestBody CocktailIngredientRelationship relationship) {
+        CocktailIngredientRelationship newRelationship = this.relationshipService.addRelationshipObject(relationship);
         return new ResponseEntity<>(newRelationship, HttpStatus.CREATED);
     }
 
+    // for this endpoint to work, JSON request body must include only the list of IDs in [] brackets - no enclosing {} braces
     @PostMapping("/addTo/{cocktailId}")
-    public ResponseEntity<Boolean> addIngredientsToOneCocktail(@PathVariable Long cocktailId, @RequestBody List<Long> ingredientIds) {
+    public ResponseEntity<Boolean> addIngredientsToOneCocktail(@RequestBody List<Long> ingredientIds, @PathVariable Long cocktailId) {
         this.relationshipService.addIngredientsToOneCocktail(cocktailId,ingredientIds);
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }

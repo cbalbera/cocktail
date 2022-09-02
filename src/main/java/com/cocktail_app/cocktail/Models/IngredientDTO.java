@@ -7,7 +7,7 @@ public class IngredientDTO {
         ALCOHOL,
         LIQUEUR,
         MIXER,
-        FRUIT,
+        FRUIT, //TODO: how do we classify fruit juice (e.g. lime juice)
         VEGETABLE,
         SEASONING
     }

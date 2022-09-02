@@ -38,7 +38,12 @@ public class CocktailIngredientRelationshipService {
         return relationshipRepo.findByIngredientId(cocktailId);
     }
 
-    public CocktailIngredientRelationship addRelationship(Long cocktailId, Long ingredientId) {
+    public CocktailIngredientRelationship addRelationshipObject(CocktailIngredientRelationship relationship) {
+        relationshipRepo.save(relationship);
+        return relationship;
+    }
+
+    public CocktailIngredientRelationship addRelationshipDeconstructed(Long cocktailId, Long ingredientId) {
         CocktailIngredientRelationship relationship = new CocktailIngredientRelationship(cocktailId,ingredientId);
         relationshipRepo.save(relationship);
         return relationship;
@@ -47,7 +52,7 @@ public class CocktailIngredientRelationshipService {
     public void addIngredientsToOneCocktail(Long cocktailId, List<Long> ingredientIds) {
         Iterator<Long> Iterator = ingredientIds.iterator();
         while (Iterator.hasNext()) {
-            addRelationship(cocktailId,Iterator.next());
+            addRelationshipDeconstructed(cocktailId,Iterator.next());
         }
     }
 
