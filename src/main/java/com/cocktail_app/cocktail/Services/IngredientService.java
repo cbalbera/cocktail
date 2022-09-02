@@ -19,7 +19,7 @@ public class IngredientService {
 
     public IngredientRepo ingredientRepo;
 
-    //TODO: examine if we should have a superclass for all Services that creates the sessionfactory (next 10 lines)
+    //TODO: examine if we should have a superclass for all Services to abstract away creation of the sessionfactory (next 10 lines)
     private SessionFactory hibernateFactory;
 
     @Autowired

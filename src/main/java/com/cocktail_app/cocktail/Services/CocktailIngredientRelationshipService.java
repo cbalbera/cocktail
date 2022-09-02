@@ -4,15 +4,17 @@ import com.cocktail_app.cocktail.Models.CocktailIngredientRelationship;
 import com.cocktail_app.cocktail.Repositories.CocktailIngredientRelationshipRepo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Iterator;
 import java.util.List;
 
+@Component
 public class CocktailIngredientRelationshipService {
     public CocktailIngredientRelationshipRepo relationshipRepo;
 
-    //TODO: examine if we should have a superclass for all Services that creates the sessionfactory (next 10 lines)
+    //TODO: examine if we should have a superclass for all Services to abstract away creation of the sessionfactory (next 10 lines)
     private SessionFactory hibernateFactory;
 
     @Autowired
