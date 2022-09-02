@@ -29,7 +29,7 @@ public class CocktailIngredientRelationshipService {
     }
 
     public List<Long> getCocktailsByIngredientId(Long ingredientId) {
-        return relationshipRepo.findByIngredientId(ingredientId);
+        return relationshipRepo.findByCocktailId(ingredientId);
     }
 
     public List<Long> getIngredientsByCocktailId(Long cocktailId) {
