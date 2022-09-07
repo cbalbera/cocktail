@@ -82,7 +82,11 @@ public class IngredientService {
         return IngredientDB;
     }
 
-    public IngredientDTO convertIngredientDBToIngredientDTO(IngredientDB ingredient) {
+    // private methods
+
+    // class conversion methods
+    // DB > DTO
+    private IngredientDTO convertIngredientDBToIngredientDTO(IngredientDB ingredient) {
         IngredientDTO.ingredientType type = ingredientTypeIntToEnum(ingredient.getType());
         return new IngredientDTO(
                 ingredient.getId(),
@@ -91,7 +95,8 @@ public class IngredientService {
         );
     }
 
-    public IngredientDB convertIngredientDTOToIngredientDB(IngredientDTO ingredient) {
+    // DTO > DB
+    private IngredientDB convertIngredientDTOToIngredientDB(IngredientDTO ingredient) {
         int type = ingredientTypeEnumToInt(ingredient.getType());
         return new IngredientDB(
                 ingredient.getId(),
@@ -100,7 +105,9 @@ public class IngredientService {
         );
     }
 
-    public IngredientDTO.ingredientType ingredientTypeIntToEnum(int type) {
+    // enumeration conversion methods
+    // int to enum
+    private IngredientDTO.ingredientType ingredientTypeIntToEnum(int type) {
         IngredientDTO.ingredientType output = IngredientDTO.ingredientType.ALCOHOL;
         switch(type) {
             case 0:
@@ -125,7 +132,9 @@ public class IngredientService {
         }
         return output;
     }
-    public int ingredientTypeEnumToInt(IngredientDTO.ingredientType type) {
+
+    // enum to int
+    private int ingredientTypeEnumToInt(IngredientDTO.ingredientType type) {
         int output = 0;
         switch(type) {
             case ALCOHOL:

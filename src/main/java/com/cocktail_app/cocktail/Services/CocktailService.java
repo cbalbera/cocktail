@@ -87,7 +87,11 @@ public class CocktailService {
         return cocktailDB;
     }
 
-    public CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
+    // private methods
+
+    // class conversion methods
+    // DB > DTO
+    private CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         String instructions = instructionsToString(cocktail.getInstructions());
         return new CocktailDB(
@@ -106,7 +110,8 @@ public class CocktailService {
         );
     }
 
-    public CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
+    // DTO > DB
+    private CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
         List<String> instructions = parseCocktailInstructions(cocktail.getInstructions());
         return new CocktailDTO(
@@ -125,7 +130,9 @@ public class CocktailService {
         );
     }
 
-    public int difficultyEnumToInt(CocktailDTO.Difficulty difficulty) {
+    // enumeration conversion methods
+    // int to enum
+    private int difficultyEnumToInt(CocktailDTO.Difficulty difficulty) {
         int output = 0;
         switch(difficulty) {
             case VERY_EASY:
@@ -145,7 +152,8 @@ public class CocktailService {
         return output;
     }
 
-    public CocktailDTO.Difficulty difficultyIntToEnum(int difficulty) {
+    // enum to int
+    private CocktailDTO.Difficulty difficultyIntToEnum(int difficulty) {
         CocktailDTO.Difficulty output = CocktailDTO.Difficulty.VERY_EASY;
         switch(difficulty) {
             case 0:
@@ -165,7 +173,9 @@ public class CocktailService {
         return output;
     }
 
-    public List<String> parseCocktailInstructions(String instructions) {
+    // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
+    // String to List<String> for use with Instructions
+    private List<String> parseCocktailInstructions(String instructions) {
         // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<String> output = new ArrayList<String>();
@@ -185,14 +195,16 @@ public class CocktailService {
         return output;
     }
 
-    public String instructionsToString(List<String> instructions) {
+    // List<String> to String for use with Instructions
+    private String instructionsToString(List<String> instructions) {
         String output = String.join("~",instructions);
         return output;
     }
 
+    // delimiter addition for initial data intake
     // this parsing method may need to be made more robust as time goes on
     // it is also not efficient at present - O(N) time and O(N) space, really 2N additional space
-    public String addInstructionsDelimiter(String instructions) {
+    private String addInstructionsDelimiter(String instructions) {
         int n = instructions.length();
         if (n < 4) { return instructions; }
         char[] instructionsChars = instructions.toCharArray();

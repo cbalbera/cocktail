@@ -53,7 +53,17 @@ public class UserService {
         }
     }
 
-    public UserDTO convertUserDBToUserDTO(UserDB user) {
+    public UserDB updateCocktail(UserDTO user) {
+        UserDB userDB = convertUserDTOToUserDB(user);
+        userRepo.save(userDB);
+        return userDB;
+    }
+
+    // private methods
+
+    // class conversion methods
+    // DB > DTO
+    private UserDTO convertUserDBToUserDTO(UserDB user) {
         UserDTO.userType type = userTypeIntToEnum(user.getUserType());
         List<Long> cocktailList = parseStringToListLong(user.getCocktailList());
         List<Long> pantry = parseStringToListLong(user.getPantry());
@@ -71,7 +81,8 @@ public class UserService {
         );
     }
 
-    public UserDB convertUserDTOToUserDB(UserDTO user) {
+    // DTO > DB
+    private UserDB convertUserDTOToUserDB(UserDTO user) {
         int type = userTypeEnumToInt(user.getUserType());
         String cocktailList = listLongToString(user.getCocktailList());
         String pantry = listLongToString(user.getPantry());
@@ -89,13 +100,9 @@ public class UserService {
         );
     }
 
-    public UserDB updateCocktail(UserDTO user) {
-        UserDB userDB = convertUserDTOToUserDB(user);
-        userRepo.save(userDB);
-        return userDB;
-    }
-
-    public UserDTO.userType userTypeIntToEnum(int type) {
+    // enumeration conversion methods
+    // int to enum
+    private UserDTO.userType userTypeIntToEnum(int type) {
         UserDTO.userType output = UserDTO.userType.USER;
         switch (type) {
             case 0:
@@ -112,7 +119,8 @@ public class UserService {
         return output;
     }
 
-    public int userTypeEnumToInt(UserDTO.userType type) {
+    // enum to int
+    private int userTypeEnumToInt(UserDTO.userType type) {
         int output = 0;
         switch(type) {
             case USER:
@@ -129,7 +137,9 @@ public class UserService {
         return output;
     }
 
-    public List<Long> parseStringToListLong(String string) {
+    // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
+    // String to List<Long>
+    private List<Long> parseStringToListLong(String string) {
         // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<Long> output = new ArrayList<Long>();
@@ -149,7 +159,8 @@ public class UserService {
         return output;
     }
 
-    public String listLongToString(List<Long> listLong) {
+    // List<Long> to String
+    private String listLongToString(List<Long> listLong) {
         String output = listLong
                 .stream()
                 .map(String::valueOf)
