@@ -47,10 +47,11 @@ public class CocktailService {
     }
 
 
-    public CocktailDB addCocktail(CocktailDB cocktail) {
-        cocktail.setInstructions(addInstructionsDelimiter(cocktail.getInstructions()));
-        cocktailRepo.save(cocktail);
-        return cocktail;
+    public CocktailDB addCocktail(CocktailDTO cocktail) {
+        CocktailDB cocktailDB = convertCocktailDTOToCocktailDB(cocktail);
+        cocktailDB.setInstructions(addInstructionsDelimiter(cocktailDB.getInstructions()));
+        cocktailRepo.save(cocktailDB);
+        return cocktailDB;
     }
 
     public List<CocktailDB> addCocktails(List<CocktailDB> cocktails) {

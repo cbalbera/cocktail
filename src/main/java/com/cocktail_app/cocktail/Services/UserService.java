@@ -53,6 +53,12 @@ public class UserService {
         }
     }
 
+    public UserDB addUser(UserDTO user) {
+        UserDB userDB = convertUserDTOToUserDB(user);
+        userRepo.save(userDB);
+        return userDB;
+    }
+
     public UserDB updateCocktail(UserDTO user) {
         UserDB userDB = convertUserDTOToUserDB(user);
         userRepo.save(userDB);
