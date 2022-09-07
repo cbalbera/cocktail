@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "com.cocktail_app.cocktail.Models.UserDB" table = "USERS">
+
+        <meta attribute = "class-description">
+            This class contains the attributes of one user.
+        </meta>
+
+        <id name = "id" type = "int" column = "cocktail_id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "username" column = "username" type = "string"/>
+        <property name = "hashedPassword" column = "hashed_password" type = "string"/>
+        <property name = "userType" column = "user_type" type = "int"/>
+        <property name = "cocktailList" column = "cocktail_list" type = "string"/>
+        <property name = "pantry" column = "pantry" type = "string"/>
+        <property name = "favoriteCocktails" column = "favorite_cocktails" type = "string"/>
+        <property name = "favoriteBartenders" column = "favorite_bartenders" type = "string"/>
+
+    </class>
+</hibernate-mapping>
