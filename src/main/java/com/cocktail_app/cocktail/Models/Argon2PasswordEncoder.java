@@ -8,7 +8,7 @@ import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.springframework.security.crypto.argon2.Argon2PasswordEncoder.constantTimeArrayEquals;
+import java.lang.reflect.Method;
 
 public class Argon2PasswordEncoder implements PasswordEncoder {
 
@@ -60,6 +60,10 @@ public class Argon2PasswordEncoder implements PasswordEncoder {
         return Argon2EncodingUtils.encode(hash, params);
     }
 
+    //Method method = org.springframework.security.crypto.argon2.Argon2PasswordEncoder.class.getDeclaredMethod("constantTimeArrayEquals",byte[].class,byte[].class);
+
+    //method.setAccessible(true);
+
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         if (encodedPassword == null) {
@@ -83,6 +87,21 @@ public class Argon2PasswordEncoder implements PasswordEncoder {
         generator.generateBytes(rawPassword.toString().toCharArray(), hashBytes);
 
         return constantTimeArrayEquals(decoded.getHash(), hashBytes);
+    }
+
+    // source: https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/accounts/CryptoHelper.java?autodive=0%2F%2F
+    private static boolean constantTimeArrayEquals(byte[] a, byte[] b) {
+        if (a == null || b == null) {
+            return a == b;
+        }
+        if (a.length != b.length) {
+            return false;
+        }
+        boolean isEqual = true;
+        for (int i = 0; i < b.length; i++) {
+            isEqual &= (a[i] == b[i]);
+        }
+        return isEqual;
     }
 
 }
