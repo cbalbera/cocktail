@@ -90,7 +90,7 @@ public class Argon2PasswordEncoder implements PasswordEncoder {
     }
 
     // source: https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/accounts/CryptoHelper.java?autodive=0%2F%2F
-    private static boolean constantTimeArrayEquals(byte[] a, byte[] b) {
+    private boolean constantTimeArrayEquals(byte[] a, byte[] b) {
         if (a == null || b == null) {
             return a == b;
         }

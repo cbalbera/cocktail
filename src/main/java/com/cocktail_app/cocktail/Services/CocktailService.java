@@ -82,12 +82,12 @@ public class CocktailService {
     }
 
     public CocktailDB updateCocktail(CocktailDTO cocktail) {
-        CocktailDB cocktailDB = convertCocktailToCocktailDB(cocktail);
+        CocktailDB cocktailDB = convertCocktailDTOToCocktailDB(cocktail);
         cocktailRepo.save(cocktailDB);
         return cocktailDB;
     }
 
-    public CocktailDB convertCocktailToCocktailDB(CocktailDTO cocktail) {
+    public CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         String instructions = instructionsToString(cocktail.getInstructions());
         return new CocktailDB(

@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="api/v1/Cocktail") //TODO update
-public class CocktailController {
+public class CocktailControllerExternal {
 
     private final CocktailService cocktailService;
 
     @Autowired
-    public CocktailController(CocktailService cocktailService) {
+    public CocktailControllerExternal(CocktailService cocktailService) {
         this.cocktailService = cocktailService;
     }
 

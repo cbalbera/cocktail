@@ -1,5 +1,6 @@
 package com.cocktail_app.cocktail.Models;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,6 +77,11 @@ public class UserDTO {
         return favoriteCocktails;
     }
 
+    public Argon2PasswordEncoder getEncoder() {
+        // the parameters of the below call should be stored somewhere safely (i.e. a file not on Github) going fwd
+        return new Argon2PasswordEncoder(16,32,1,1<<12,3);
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -88,9 +94,8 @@ public class UserDTO {
         this.username = username;
     }
 
-    //TODO: overwrite this with setter that uses pwd encoder
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    public void setHashedPassword(String password) {
+        this.hashedPassword = this.getEncoder().encode(password);
     }
 
     public void setUserType(userType userType) {
