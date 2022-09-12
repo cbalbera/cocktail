@@ -14,13 +14,16 @@
             <generator class="native"/>
         </id>
 
-        <property name = "username" column = "username" type = "string"/>
+        <property name = "firstName" column = "first_name" type = "string"/>
+        <property name = "lastName" column = "last_name" type = "string"/>
+        <property name = "email" column = "email" type = "string"/>
         <property name = "hashedPassword" column = "hashed_password" type = "string"/>
         <property name = "userType" column = "user_type" type = "int"/>
         <property name = "cocktailList" column = "cocktail_list" type = "string"/>
         <property name = "pantry" column = "pantry" type = "string"/>
         <property name = "favoriteCocktails" column = "favorite_cocktails" type = "string"/>
         <property name = "favoriteBartenders" column = "favorite_bartenders" type = "string"/>
+        <property name = "zipCode" column = "zip_code" type = "int"/>
 
     </class>
 </hibernate-mapping>

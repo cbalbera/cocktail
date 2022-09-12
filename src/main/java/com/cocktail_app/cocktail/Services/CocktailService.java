@@ -1,5 +1,6 @@
 package com.cocktail_app.cocktail.Services;
 
+import com.cocktail_app.cocktail.Helpers.CocktailConverter;
 import com.cocktail_app.cocktail.Models.CocktailDTO;
 import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Repositories.CocktailRepo;
@@ -21,16 +22,17 @@ import static java.lang.Character.isDigit;
 public class CocktailService {
 
     public CocktailRepo cocktailRepo;
-
     private SessionFactory hibernateFactory;
+    private CocktailConverter converter;
 
     @Autowired
-    public CocktailService(EntityManagerFactory factory, CocktailRepo cocktailRepo) {
+    public CocktailService(EntityManagerFactory factory, CocktailRepo cocktailRepo, CocktailConverter converter) {
         if(factory.unwrap(SessionFactory.class) == null){
             throw new NullPointerException("factory is not a hibernate factory");
         }
         this.hibernateFactory = factory.unwrap(SessionFactory.class); //https://stackoverflow.com/questions/25063995/spring-boot-handle-to-hibernate-sessionfactory
         this.cocktailRepo = cocktailRepo;
+        this.converter = converter;
     }
 
     public List<CocktailDTO> getCocktails() {
@@ -40,18 +42,17 @@ public class CocktailService {
         List<CocktailDTO> output = new ArrayList<CocktailDTO>();
         ListIterator<CocktailDB> Iterator = cocktails.listIterator();
         while (Iterator.hasNext()) {
-            CocktailDTO cocktail = convertCocktailDBToCocktailDTO(Iterator.next());
+            CocktailDTO cocktail = converter.convertCocktailDBToCocktailDTO(Iterator.next());
             output.add(cocktail);
         }
         return output;
     }
 
 
-    public CocktailDB addCocktail(CocktailDTO cocktail) {
-        CocktailDB cocktailDB = convertCocktailDTOToCocktailDB(cocktail);
-        cocktailDB.setInstructions(addInstructionsDelimiter(cocktailDB.getInstructions()));
-        cocktailRepo.save(cocktailDB);
-        return cocktailDB;
+    public CocktailDB addCocktail(CocktailDB cocktail) {
+        cocktail.setInstructions(converter.addInstructionsDelimiter(cocktail.getInstructions()));
+        cocktailRepo.save(cocktail);
+        return cocktail;
     }
 
     public List<CocktailDB> addCocktails(List<CocktailDB> cocktails) {
@@ -72,7 +73,7 @@ public class CocktailService {
         Optional<CocktailDB> cocktailOptional = cocktailRepo.findById(id);
         if (cocktailOptional.isPresent()) {
             CocktailDB cocktailDB = cocktailOptional.get();
-            return convertCocktailDBToCocktailDTO(cocktailDB);
+            return converter.convertCocktailDBToCocktailDTO(cocktailDB);
         } else {
             return null;
         }
@@ -83,140 +84,11 @@ public class CocktailService {
     }
 
     public CocktailDB updateCocktail(CocktailDTO cocktail) {
-        CocktailDB cocktailDB = convertCocktailDTOToCocktailDB(cocktail);
+        CocktailDB cocktailDB = converter.convertCocktailDTOToCocktailDB(cocktail);
         cocktailRepo.save(cocktailDB);
         return cocktailDB;
     }
 
     // private methods
 
-    // class conversion methods
-    // DB > DTO
-    private CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
-        int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
-        String instructions = instructionsToString(cocktail.getInstructions());
-        return new CocktailDB(
-                cocktail.getId(),
-                cocktail.getName(),
-                cocktail.getTools(),
-                difficulty,
-                instructions,
-                cocktail.getTags(),
-                cocktail.getGlassType(),
-                cocktail.getIceType(),
-                cocktail.getIsParent(),
-                cocktail.getChildrenIDs(),
-                cocktail.getIsChild(),
-                cocktail.getParentID()
-        );
-    }
-
-    // DTO > DB
-    private CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
-        CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
-        List<String> instructions = parseCocktailInstructions(cocktail.getInstructions());
-        return new CocktailDTO(
-                cocktail.getId(),
-                cocktail.getName(),
-                cocktail.getTools(),
-                difficulty,
-                instructions,
-                cocktail.getTags(),
-                cocktail.getGlassType(),
-                cocktail.getIceType(),
-                cocktail.getIsParent(),
-                cocktail.getChildrenIDs(),
-                cocktail.getIsChild(),
-                cocktail.getParentID()
-        );
-    }
-
-    // enumeration conversion methods
-    // int to enum
-    private int difficultyEnumToInt(CocktailDTO.Difficulty difficulty) {
-        int output = 0;
-        switch(difficulty) {
-            case VERY_EASY:
-                break;
-            case EASY:
-                output = 1;
-                break;
-            case MODERATE:
-                output = 2;
-                break;
-            case DIFFICULT:
-                output = 3;
-                break;
-            default:
-                break;
-        }
-        return output;
-    }
-
-    // enum to int
-    private CocktailDTO.Difficulty difficultyIntToEnum(int difficulty) {
-        CocktailDTO.Difficulty output = CocktailDTO.Difficulty.VERY_EASY;
-        switch(difficulty) {
-            case 0:
-                break;
-            case 1:
-                output = CocktailDTO.Difficulty.EASY;
-                break;
-            case 2:
-                output = CocktailDTO.Difficulty.MODERATE;
-                break;
-            case 3:
-                output = CocktailDTO.Difficulty.DIFFICULT;
-                break;
-            default:
-                break;
-        }
-        return output;
-    }
-
-    // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
-    // String to List<String> for use with Instructions
-    private List<String> parseCocktailInstructions(String instructions) {
-        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
-        // note that this is handled in instructionsToString below, so only necessary for new instructions input
-        List<String> output = new ArrayList<String>();
-        char delimiter = '~';
-        int priorLineStart = 0, i = 0, n = instructions.length();
-        // add instructions line
-        for(; i < n; i++) {
-            if (instructions.charAt(i) == delimiter) {
-                String toAdd = instructions.substring(priorLineStart,i);
-                output.add(toAdd);
-                priorLineStart = i+1;
-            }
-        }
-        // add final instructions line, which will end at end of String and not have a delimiter
-        String toAdd = instructions.substring(priorLineStart,i);
-        output.add(toAdd);
-        return output;
-    }
-
-    // List<String> to String for use with Instructions
-    private String instructionsToString(List<String> instructions) {
-        String output = String.join("~",instructions);
-        return output;
-    }
-
-    // delimiter addition for initial data intake
-    // this parsing method may need to be made more robust as time goes on
-    // it is also not efficient at present - O(N) time and O(N) space, really 2N additional space
-    private String addInstructionsDelimiter(String instructions) {
-        int n = instructions.length();
-        if (n < 4) { return instructions; }
-        char[] instructionsChars = instructions.toCharArray();
-        char period = '.';
-        char tilde = '~';
-        // this makes the assumption that a number followed by a period signifies the end of a line
-        for (int i = 3; i < n; i++) {
-            if (isDigit(instructionsChars[i-1]) && instructionsChars[i] == period) {
-                instructionsChars[i-2] = tilde;
-            }
-        }
-        return new String(instructionsChars);
-    }
 }

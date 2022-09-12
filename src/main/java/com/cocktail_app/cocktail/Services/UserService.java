@@ -1,34 +1,32 @@
 package com.cocktail_app.cocktail.Services;
 
+import com.cocktail_app.cocktail.Helpers.CocktailConverter;
 import com.cocktail_app.cocktail.Models.*;
-import com.cocktail_app.cocktail.Repositories.CocktailIngredientRelationshipRepo;
 import com.cocktail_app.cocktail.Repositories.UserRepo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class UserService {
 
     public UserRepo userRepo;
-
     //TODO: examine if we should have a superclass for all Services to abstract away creation of the sessionfactory (next 10 lines)
     private SessionFactory hibernateFactory;
+    public CocktailConverter converter;
 
     @Autowired
-    public UserService(EntityManagerFactory factory, UserRepo userRepo) {
+    public UserService(EntityManagerFactory factory, UserRepo userRepo, CocktailConverter converter) {
         if(factory.unwrap(SessionFactory.class) == null){
             throw new NullPointerException("factory is not a hibernate factory");
         }
         this.hibernateFactory = factory.unwrap(SessionFactory.class);
         this.userRepo = userRepo;
+        this.converter = converter;
     }
 
     public List<UserDTO> getUsers() {
@@ -43,26 +41,68 @@ public class UserService {
         return output;
     }
 
-    public UserDTO findUserById(Long id) {
-        Optional<UserDB> userOptional = userRepo.findById(id);
-        if (userOptional.isPresent()) {
-            UserDB userDB = userOptional.get();
-            return convertUserDBToUserDTO(userDB);
+    public UserDTO findUserById(UUID id) {
+        UserDB user = userRepo.findUserByUUID(id);
+        if (user != null) {
+            return convertUserDBToUserDTO(user);
         } else {
             return null;
         }
     }
 
-    public UserDB addUser(UserDTO user) {
-        UserDB userDB = convertUserDTOToUserDB(user);
-        userRepo.save(userDB);
-        return userDB;
+    public UserDB addUser(UserDB user) {
+        // add method uses setter, so this method includes pwd hashing
+        userRepo.save(user);
+        return user;
     }
 
     public UserDB updateCocktail(UserDTO user) {
         UserDB userDB = convertUserDTOToUserDB(user);
         userRepo.save(userDB);
         return userDB;
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepo.deleteUserByUUID(userId);
+    }
+
+    public boolean userLogIn(String email, String rawPassword) {
+        UserDB user = userRepo.findByEmail(email);
+        if (user == null) {
+            return false;
+        } else {
+            Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+            return encoder.matches(rawPassword,user.getHashedPassword());
+        }
+    }
+
+    //TODO: sanitize inputs to avoid SQL injection (as well as other common errors)
+    // used short return type here to enable different types of rejection, although currently only checking by email
+    public short createUser(UserDB user) {
+        System.out.println("finding user by email address of "+user.getEmail());
+        System.out.println("value of exists function is "+userRepo.existsByEmail(user.getEmail()));
+        if (!userRepo.existsByEmail(user.getEmail())) {
+            addUser(user);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public CocktailDB findCocktailByID(Long cocktailId) {
+        return this.userRepo.findCocktailByID(cocktailId);
+    }
+
+    public List<CocktailDTO> getUserCocktails(UUID userId) {
+        UserDTO user = findUserById(userId);
+        List<CocktailDTO> output = new ArrayList<>();
+        ListIterator<Long> iterator = user.getCocktailList().listIterator();
+        while(iterator.hasNext()) {
+            CocktailDB cocktailDB = findCocktailByID(iterator.next());
+            CocktailDTO cocktailDTO = converter.convertCocktailDBToCocktailDTO(cocktailDB);
+            output.add(cocktailDTO);
+        }
+        return output;
     }
 
     // private methods
@@ -77,13 +117,16 @@ public class UserService {
         List<Long> favoriteBartenders = parseStringToListLong(user.getFavoriteBartenders());
         return new UserDTO(
                 user.getId(),
-                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
                 user.getHashedPassword(),
                 type,
                 cocktailList,
                 pantry,
                 favoriteCocktails,
-                favoriteBartenders
+                favoriteBartenders,
+                user.getZipCode()
         );
     }
 
@@ -96,13 +139,16 @@ public class UserService {
         String favoriteBartenders = listLongToString(user.getFavoriteBartenders());
         return new UserDB(
                 user.getId(),
-                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
                 user.getHashedPassword(),
                 type,
                 cocktailList,
                 pantry,
                 favoriteCocktails,
-                favoriteBartenders
+                favoriteBartenders,
+                user.getZipCode()
         );
     }
 
@@ -125,6 +171,12 @@ public class UserService {
         return output;
     }
 
+    //TODO
+    // login function
+    // receive password from user as a put request
+    // hash password
+    // check for match
+
     // enum to int
     private int userTypeEnumToInt(UserDTO.userType type) {
         int output = 0;
@@ -146,6 +198,7 @@ public class UserService {
     // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
     // String to List<Long>
     private List<Long> parseStringToListLong(String string) {
+        if (string == null) { return null; }
         // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<Long> output = new ArrayList<Long>();
@@ -167,6 +220,7 @@ public class UserService {
 
     // List<Long> to String
     private String listLongToString(List<Long> listLong) {
+        if (listLong == null) { return null; }
         String output = listLong
                 .stream()
                 .map(String::valueOf)

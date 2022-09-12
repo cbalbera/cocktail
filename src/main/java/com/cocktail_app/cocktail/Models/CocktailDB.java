@@ -11,7 +11,6 @@ public class CocktailDB {
     private Long id;
     private String name;
     private String tools;
-
     private int difficulty;
     private String instructions;
     private String tags;
@@ -21,6 +20,9 @@ public class CocktailDB {
     private String childrenIDs;
     private Boolean isChild;
     private Long parentID;
+    //TODO add bartenderID
+    //TODO: a field for "classic" or no bartenderID = classic?
+    //TODO: a field of List<String> for thumbnailIDs
 
     // empty constructor
     CocktailDB() {}

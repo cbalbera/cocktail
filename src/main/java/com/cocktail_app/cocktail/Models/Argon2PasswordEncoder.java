@@ -60,10 +60,6 @@ public class Argon2PasswordEncoder implements PasswordEncoder {
         return Argon2EncodingUtils.encode(hash, params);
     }
 
-    //Method method = org.springframework.security.crypto.argon2.Argon2PasswordEncoder.class.getDeclaredMethod("constantTimeArrayEquals",byte[].class,byte[].class);
-
-    //method.setAccessible(true);
-
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         if (encodedPassword == null) {
@@ -85,6 +81,9 @@ public class Argon2PasswordEncoder implements PasswordEncoder {
         Argon2BytesGenerator generator = new Argon2BytesGenerator();
         generator.init(decoded.getParameters());
         generator.generateBytes(rawPassword.toString().toCharArray(), hashBytes);
+
+        //System.out.println("decoded.getHash(): "+decoded.getHash());
+        //System.out.println("hashBytes: "+hashBytes);
 
         return constantTimeArrayEquals(decoded.getHash(), hashBytes);
     }

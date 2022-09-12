@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/user/admin") //TODO: for now this will be viewable; before go live, control access appropriately with token
@@ -26,20 +27,33 @@ public class UserControllerInternal {
     @GetMapping("/all")
     public List<UserDTO> getUsers() { return this.userService.getUsers(); }
 
-    // TODO: figure out where this method goes - and potential alternate implementation, esp. w/r/t intake and hashing of pwd for storage - for a new user to create themself
     @PostMapping("/add")
-    public ResponseEntity<UserDB> addUser(@RequestBody UserDTO user) {
-        UserDB newUser = this.userService.addUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    public ResponseEntity<UserDB> addUser(@RequestBody UserDB user) {
+        short creationSuccess = userService.createUser(user);
+        if (creationSuccess == 1) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDB> updateUser(@PathVariable Long userId, @RequestBody UserDTO user) {
+    public ResponseEntity<UserDB> updateUser(@PathVariable Long userId, @RequestBody UserDB user) {
         if(true) { //TODO: here, check if id is in db
             UserDB newUser = this.userService.addUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable UUID userId) {
+        if(true) { //TODO: here, check if id is in db
+            this.userService.deleteUser(userId);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
         }
     }
 

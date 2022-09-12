@@ -20,7 +20,7 @@ public class CocktailControllerInternal {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CocktailDB> addCocktail(@RequestBody CocktailDTO cocktail) {
+    public ResponseEntity<CocktailDB> addCocktail(@RequestBody CocktailDB cocktail) {
         CocktailDB newCocktail = this.cocktailService.addCocktail(cocktail);
         return new ResponseEntity<>(newCocktail, HttpStatus.CREATED);
     }

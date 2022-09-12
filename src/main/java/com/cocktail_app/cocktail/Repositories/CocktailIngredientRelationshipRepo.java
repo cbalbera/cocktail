@@ -11,9 +11,9 @@ import java.util.List;
 public interface CocktailIngredientRelationshipRepo extends JpaRepository<CocktailIngredientRelationship,Long> {
     // returns list of CocktailIngredientRelationship
     @Query(value="SELECT u FROM CocktailIngredientRelationship u WHERE cocktailId = ?1")
-    public List<CocktailIngredientRelationship> findByCocktailId(Long cocktailId);
+    List<CocktailIngredientRelationship> findByCocktailId(Long cocktailId);
 
     // returns list of CocktailIngredientRelationship
     @Query(value="SELECT u FROM CocktailIngredientRelationship u WHERE ingredientId = ?1")
-    public List<CocktailIngredientRelationship> findByIngredientId(Long ingredientId);
+    List<CocktailIngredientRelationship> findByIngredientId(Long ingredientId);
 }

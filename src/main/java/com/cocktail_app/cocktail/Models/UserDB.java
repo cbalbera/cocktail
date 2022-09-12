@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity(name="UserDB")
-@Table(name="users")
+@Table(name="Users")
 public class UserDB {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,7 +13,9 @@ public class UserDB {
     // if we deem this necessary - can see potential reasons why we would do this
     // (e.g. the use of IDs to x-ref from user > pantry and user > cocktail list)
     private UUID id;
-    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String hashedPassword;
     private int userType; // enumerated
     private String cocktailList;
@@ -26,96 +28,131 @@ public class UserDB {
     private String pantry;
     private String favoriteCocktails;
     private String favoriteBartenders;
+    private int zipCode;
 
     // empty constructor
     public UserDB() {
     }
 
     // constructor with all items
-    public UserDB(UUID id, String username, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders) {
+
+    public UserDB(UUID id, String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode) {
         this.id = id;
-        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.hashedPassword = hashedPassword;
         this.userType = userType;
         this.cocktailList = cocktailList;
         this.pantry = pantry;
         this.favoriteCocktails = favoriteCocktails;
         this.favoriteBartenders = favoriteBartenders;
+        this.zipCode = zipCode;
     }
 
     // constructor with all items except for auto-generated ID
-    public UserDB(String username, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders) {
-        this.username = username;
+
+
+    public UserDB(String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.hashedPassword = hashedPassword;
         this.userType = userType;
         this.cocktailList = cocktailList;
         this.pantry = pantry;
         this.favoriteCocktails = favoriteCocktails;
         this.favoriteBartenders = favoriteBartenders;
+        this.zipCode = zipCode;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getHashedPassword() {
         return hashedPassword;
     }
 
+    public void setHashedPassword(String password) {
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+        this.hashedPassword = encoder.encode(password);
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getUserType() {
         return userType;
-    }
-
-    public String getCocktailList() {
-        return cocktailList;
-    }
-
-    public String getPantry() {
-        return pantry;
-    }
-
-    public String getFavoriteCocktails() {
-        return favoriteCocktails;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getFavoriteBartenders() {
-        return favoriteBartenders;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    //TODO: overwrite this with setter that uses pwd encoder
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
     }
 
     public void setUserType(int userType) {
         this.userType = userType;
     }
 
+    public String getCocktailList() {
+        return cocktailList;
+    }
+
     public void setCocktailList(String cocktailList) {
         this.cocktailList = cocktailList;
     }
+
+    public String getPantry() {
+        return pantry;
+    }
+
     public void setPantry(String pantry) {
         this.pantry = pantry;
+    }
+
+    public String getFavoriteCocktails() {
+        return favoriteCocktails;
     }
 
     public void setFavoriteCocktails(String favoriteCocktails) {
         this.favoriteCocktails = favoriteCocktails;
     }
 
+    public String getFavoriteBartenders() {
+        return favoriteBartenders;
+    }
+
     public void setFavoriteBartenders(String favoriteBartenders) {
         this.favoriteBartenders = favoriteBartenders;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
     }
 
     // excludes hashed password
@@ -123,7 +160,7 @@ public class UserDB {
     public String toString() {
         return "UserDB{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", userType=" + userType +
                 ", cocktailList='" + cocktailList + '\'' +
                 ", pantry='" + pantry + '\'' +

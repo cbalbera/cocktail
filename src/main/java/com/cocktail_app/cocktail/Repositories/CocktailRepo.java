@@ -9,11 +9,6 @@ import java.util.List;
 @Repository
 public interface CocktailRepo extends JpaRepository<CocktailDB,Long> {
 
-    //TODO
-    // ADD/RELOCATE ALL FUNCTIONS THAT CONNECT TO DATABASE & HANDLE ALL NECESSARY TRANSFORMATIONS
-    // USE SERVICE CLASS FUNCTIONS WHERE NEC TO MODIFY DATA TYPES, ETC
-    // GOAL: CONTROLLER CLASS SHOULD BE AS SIMPLE AS POSSIBLE
-
     List<CocktailDB> findByName(String name);
 
 }
