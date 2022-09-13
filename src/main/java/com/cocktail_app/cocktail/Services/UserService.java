@@ -42,10 +42,16 @@ public class UserService {
     }
 
     public UserDTO findUserById(UUID id) {
+        System.out.println("UUID:");
+        System.out.println(id);
         UserDB user = userRepo.findUserByUUID(id);
+        System.out.println("user:");
+        System.out.println(user);
         if (user != null) {
+            System.out.println("match - returning user");
             return convertUserDBToUserDTO(user);
         } else {
+            System.out.println("null/no match");
             return null;
         }
     }
@@ -79,8 +85,6 @@ public class UserService {
     //TODO: sanitize inputs to avoid SQL injection (as well as other common errors)
     // used short return type here to enable different types of rejection, although currently only checking by email
     public short createUser(UserDB user) {
-        System.out.println("finding user by email address of "+user.getEmail());
-        System.out.println("value of exists function is "+userRepo.existsByEmail(user.getEmail()));
         if (!userRepo.existsByEmail(user.getEmail())) {
             addUser(user);
             return 1;
@@ -94,7 +98,10 @@ public class UserService {
     }
 
     public List<CocktailDTO> getUserCocktails(UUID userId) {
+        System.out.println("user ID is "+userId);
         UserDTO user = findUserById(userId);
+        System.out.println("user:");
+        System.out.println(user);
         List<CocktailDTO> output = new ArrayList<>();
         ListIterator<Long> iterator = user.getCocktailList().listIterator();
         while(iterator.hasNext()) {
@@ -105,16 +112,20 @@ public class UserService {
         return output;
     }
 
+    public boolean existsById(UUID userId) {
+        return this.userRepo.existsByUserId(userId);
+    }
+
     // private methods
 
     // class conversion methods
     // DB > DTO
     private UserDTO convertUserDBToUserDTO(UserDB user) {
         UserDTO.userType type = userTypeIntToEnum(user.getUserType());
-        List<Long> cocktailList = parseStringToListLong(user.getCocktailList());
-        List<Long> pantry = parseStringToListLong(user.getPantry());
-        List<Long> favoriteCocktails = parseStringToListLong(user.getFavoriteCocktails());
-        List<Long> favoriteBartenders = parseStringToListLong(user.getFavoriteBartenders());
+        List<Long> cocktailList = converter.parseStringToListLong(user.getCocktailList());
+        List<Long> pantry = converter.parseStringToListLong(user.getPantry());
+        List<Long> favoriteCocktails = converter.parseStringToListLong(user.getFavoriteCocktails());
+        List<Long> favoriteBartenders = converter.parseStringToListLong(user.getFavoriteBartenders());
         return new UserDTO(
                 user.getId(),
                 user.getFirstName(),
@@ -133,10 +144,10 @@ public class UserService {
     // DTO > DB
     private UserDB convertUserDTOToUserDB(UserDTO user) {
         int type = userTypeEnumToInt(user.getUserType());
-        String cocktailList = listLongToString(user.getCocktailList());
-        String pantry = listLongToString(user.getPantry());
-        String favoriteCocktails = listLongToString(user.getFavoriteCocktails());
-        String favoriteBartenders = listLongToString(user.getFavoriteBartenders());
+        String cocktailList = converter.listLongToString(user.getCocktailList());
+        String pantry = converter.listLongToString(user.getPantry());
+        String favoriteCocktails = converter.listLongToString(user.getFavoriteCocktails());
+        String favoriteBartenders = converter.listLongToString(user.getFavoriteBartenders());
         return new UserDB(
                 user.getId(),
                 user.getFirstName(),
@@ -171,12 +182,6 @@ public class UserService {
         return output;
     }
 
-    //TODO
-    // login function
-    // receive password from user as a put request
-    // hash password
-    // check for match
-
     // enum to int
     private int userTypeEnumToInt(UserDTO.userType type) {
         int output = 0;
@@ -194,39 +199,5 @@ public class UserService {
         }
         return output;
     }
-
-    // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
-    // String to List<Long>
-    private List<Long> parseStringToListLong(String string) {
-        if (string == null) { return null; }
-        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
-        // note that this is handled in instructionsToString below, so only necessary for new instructions input
-        List<Long> output = new ArrayList<Long>();
-        char delimiter = '~';
-        int priorLineStart = 0, i = 0, n = string.length();
-        // add instructions line
-        for (; i < n; i++) {
-            if (string.charAt(i) == delimiter) {
-                Long toAdd = Long.parseLong(string.substring(priorLineStart, i));
-                output.add(toAdd);
-                priorLineStart = i + 1;
-            }
-        }
-        // add final instructions line, which will end at end of String and not have a delimiter
-        Long toAdd = Long.parseLong(string.substring(priorLineStart, i));
-        output.add(toAdd);
-        return output;
-    }
-
-    // List<Long> to String
-    private String listLongToString(List<Long> listLong) {
-        if (listLong == null) { return null; }
-        String output = listLong
-                .stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining("~"));
-        return output;
-    }
-
 
 }

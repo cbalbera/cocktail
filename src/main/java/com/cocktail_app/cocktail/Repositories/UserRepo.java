@@ -23,6 +23,8 @@ public interface UserRepo extends JpaRepository<UserDB,Long> {
     void deleteUserByUUID(@Param("id") UUID id);
 
     @Query
+    boolean existsByUserId(UUID userId);
+    @Query
     boolean existsByEmail(String email);
 
     @Query(value="Select u FROM CocktailDB u WHERE id=:id")

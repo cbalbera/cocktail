@@ -14,7 +14,7 @@ public class UserDTO {
         BARTENDER,
         ADMIN
     }
-    private UUID id;
+    private UUID userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -36,7 +36,7 @@ public class UserDTO {
     // constructor with all items
 
     public UserDTO(UUID id, String firstName, String lastName, String email, String hashedPassword, UserDTO.userType userType, List<Long> cocktailList, List<Long> pantry, List<Long> favoriteCocktails, List<Long> favoriteBartenders, int zipCode) {
-        this.id = id;
+        this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -65,11 +65,11 @@ public class UserDTO {
     }
 
     public UUID getId() {
-        return id;
+        return userId;
     }
 
     public void setId(UUID id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getFirstName() {
@@ -156,7 +156,7 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                "id=" + id +
+                "id=" + userId +
                 ", email='" + email + '\'' +
                 ", userType=" + userType +
                 ", cocktailList='" + cocktailList + '\'' +

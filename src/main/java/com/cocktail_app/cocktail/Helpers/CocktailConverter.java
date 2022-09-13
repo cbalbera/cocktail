@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Character.isDigit;
 
@@ -15,7 +16,7 @@ public class CocktailConverter {
     // DB > DTO
     public CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
-        String instructions = instructionsToString(cocktail.getInstructions());
+        String instructions = listStringToString(cocktail.getInstructions());
         return new CocktailDB(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -35,7 +36,7 @@ public class CocktailConverter {
     // DTO > DB
     public CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
-        List<String> instructions = parseCocktailInstructions(cocktail.getInstructions());
+        List<String> instructions = parseStringToListString(cocktail.getInstructions());
         return new CocktailDTO(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -97,7 +98,7 @@ public class CocktailConverter {
 
     // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
     // String to List<String> for use with Instructions
-    public List<String> parseCocktailInstructions(String instructions) {
+    public List<String> parseStringToListString(String instructions) {
         // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<String> output = new ArrayList<String>();
@@ -118,7 +119,7 @@ public class CocktailConverter {
     }
 
     // List<String> to String for use with Instructions
-    public String instructionsToString(List<String> instructions) {
+    public String listStringToString(List<String> instructions) {
         String output = String.join("~",instructions);
         return output;
     }
@@ -139,5 +140,37 @@ public class CocktailConverter {
             }
         }
         return new String(instructionsChars);
+    }
+
+    // String to List<Long>
+    public List<Long> parseStringToListLong(String string) {
+        if (string == null) { return null; }
+        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
+        // note that this is handled in instructionsToString below, so only necessary for new instructions input
+        List<Long> output = new ArrayList<Long>();
+        char delimiter = '~';
+        int priorLineStart = 0, i = 0, n = string.length();
+        // add instructions line
+        for (; i < n; i++) {
+            if (string.charAt(i) == delimiter) {
+                Long toAdd = Long.parseLong(string.substring(priorLineStart, i));
+                output.add(toAdd);
+                priorLineStart = i + 1;
+            }
+        }
+        // add final instructions line, which will end at end of String and not have a delimiter
+        Long toAdd = Long.parseLong(string.substring(priorLineStart, i));
+        output.add(toAdd);
+        return output;
+    }
+
+    // List<Long> to String
+    public String listLongToString(List<Long> listLong) {
+        if (listLong == null) { return null; }
+        String output = listLong
+                .stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining("~"));
+        return output;
     }
 }

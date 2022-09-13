@@ -24,17 +24,13 @@ public class UserControllerExternal {
         this.userService = userService;
     }
 
-    // for user data - frontend will likely only access the endpoints it needs, but
-    // will it be necessary to enforce this?  e.g. the UserDTO returned
-    @PostMapping("/profile")
-    public UserDTO getUser(@RequestBody UUID userId) { return this.userService.findUserById(userId); }
-
     @PostMapping("/login/attempt")
     public ResponseEntity<Boolean> loginAttempt(@RequestBody Map<String,String> json) {
         String email = json.get("email");
         String rawPassword = json.get("rawPassword");
         Boolean loginSuccess = userService.userLogIn(email,rawPassword);
         if (loginSuccess) {
+            System.out.println("login success");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -50,10 +46,17 @@ public class UserControllerExternal {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+    // TODO: implement OAuth2.0 on the below endpoints after successful login
 
-    @PostMapping("/profile/cocktails")
+    // for the below two endpoints to work, JSON request body must include only the UUID
+    // wrapped neither in [] brackets NOR enclosing {} braces
+    @PostMapping("/profile/")
+    public UserDTO getUser(@RequestBody UUID userId) { return this.userService.findUserById(userId); }
+
+    @PostMapping("/profile/cocktails/")
     public List<CocktailDTO> getUserCocktails(@RequestBody UUID userId) {
-        return userService.getUserCocktails(userId);
+        return this.userService.getUserCocktails(userId);
     }
+
 
 }

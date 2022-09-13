@@ -1,5 +1,7 @@
 package com.cocktail_app.cocktail.Models;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -9,10 +11,13 @@ public class UserDB {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id", insertable = false, updatable = false, nullable = false)
+    // apparently, @Type is deprecated with no replacement & was reinstated in Hibernate 6.0.  suppressing/ignoring
+    // this warning.  https://stackoverflow.com/questions/69858533/replacement-for-hibernates-deprecated-type-annotation
+    @Type(type="org.hibernate.type.UUIDCharType")
     // insertable, updatable, nullable can also be set as such for other DB objects
     // if we deem this necessary - can see potential reasons why we would do this
     // (e.g. the use of IDs to x-ref from user > pantry and user > cocktail list)
-    private UUID id;
+    private UUID userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -37,7 +42,7 @@ public class UserDB {
     // constructor with all items
 
     public UserDB(UUID id, String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode) {
-        this.id = id;
+        this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -67,11 +72,11 @@ public class UserDB {
     }
 
     public UUID getId() {
-        return id;
+        return userId;
     }
 
     public void setId(UUID id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getFirstName() {
@@ -159,7 +164,7 @@ public class UserDB {
     @Override
     public String toString() {
         return "UserDB{" +
-                "id=" + id +
+                "id=" + userId +
                 ", email='" + email + '\'' +
                 ", userType=" + userType +
                 ", cocktailList='" + cocktailList + '\'' +

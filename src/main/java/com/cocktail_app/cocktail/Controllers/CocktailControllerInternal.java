@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path="api/v1/Cocktail/admin") //TODO require specific auth to visit admin endpoints
 public class CocktailControllerInternal {
@@ -42,6 +44,26 @@ public class CocktailControllerInternal {
             return new ResponseEntity<>(true,HttpStatus.OK);
         } else {
             return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/addChildren/{cocktailId}")
+    public ResponseEntity<CocktailDB> addChildren(@PathVariable Long cocktailId, @RequestBody List<Long> childrenIDs) {
+        if(true) { //TODO: here, check if id is in db
+            CocktailDB newCocktail = this.cocktailService.addChildren(cocktailId,childrenIDs);
+            return new ResponseEntity<>(newCocktail, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/addParent/{cocktailId}")
+    public ResponseEntity<CocktailDB> addParent(@PathVariable Long cocktailId, @RequestBody Long parentId) {
+        if(true) { //TODO: here, check if id is in db
+            CocktailDB newCocktail = this.cocktailService.addParent(cocktailId,parentId);
+            return new ResponseEntity<>(newCocktail, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 }

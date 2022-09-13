@@ -89,6 +89,41 @@ public class CocktailService {
         return cocktailDB;
     }
 
+    //TODO: for the below - as well as for some in the relationship class - check whether IDs exist in database
+    // as long as this request isn't overly onerous
+    public CocktailDB addChild(CocktailDB cocktail, Long childId) {
+        String childString = Long.toString(childId);
+        if (!cocktail.getIsParent()) {
+            cocktail.setIsParent(true);
+            cocktail.setChildrenIDs(childString);
+        } else {
+            cocktail.setChildrenIDs(cocktail.getChildrenIDs() + "~" + childString);
+        }
+        cocktailRepo.save(cocktail);
+        return cocktail;
+    }
+
+    public CocktailDB addChildren(Long cocktailId, List<Long> childrenIds) {
+        CocktailDTO cocktailDTO = findCocktailById(cocktailId);
+        if (cocktailDTO == null) { return null; }
+        CocktailDB cocktail = converter.convertCocktailDTOToCocktailDB(cocktailDTO);
+        ListIterator<Long> iterator = childrenIds.listIterator();
+        while(iterator.hasNext()) {
+            addChild(cocktail,iterator.next());
+        }
+        return cocktail;
+    }
+
+    public CocktailDB addParent(Long cocktailId, Long parentId) {
+        CocktailDTO cocktailDTO = findCocktailById(cocktailId);
+        if (cocktailDTO == null) { return null; }
+        CocktailDB cocktail = converter.convertCocktailDTOToCocktailDB(cocktailDTO);
+        cocktail.setIsChild(true);
+        cocktail.setParentID(parentId);
+        cocktailRepo.save(cocktail);
+        return cocktail;
+    }
+
     // private methods
 
 }

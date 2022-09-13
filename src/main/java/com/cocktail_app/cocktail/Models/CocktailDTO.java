@@ -19,9 +19,9 @@ public class CocktailDTO {
     private String tags;
     private String glassType;
     private String iceType;
-    private Boolean isParent;
+    private Boolean isParent = false;
     private String childrenIDs;
-    private Boolean isChild;
+    private Boolean isChild  = false;
     private Long parentID;
 
     // empty constructor

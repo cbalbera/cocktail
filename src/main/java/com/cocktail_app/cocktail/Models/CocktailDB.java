@@ -16,9 +16,9 @@ public class CocktailDB {
     private String tags;
     private String glassType;
     private String iceType;
-    private Boolean isParent;
+    private Boolean isParent = false;
     private String childrenIDs;
-    private Boolean isChild;
+    private Boolean isChild = false;
     private Long parentID;
     //TODO add bartenderID
     //TODO: a field for "classic" or no bartenderID = classic?

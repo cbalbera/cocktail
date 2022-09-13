@@ -38,8 +38,8 @@ public class UserControllerInternal {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDB> updateUser(@PathVariable Long userId, @RequestBody UserDB user) {
-        if(true) { //TODO: here, check if id is in db
+    public ResponseEntity<UserDB> updateUser(@PathVariable UUID userId, @RequestBody UserDB user) {
+        if(userService.existsById(userId)) { //TODO: here, check if id is in db
             UserDB newUser = this.userService.addUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } else {

@@ -10,7 +10,7 @@
             This class contains the attributes of one user.
         </meta>
 
-        <id name = "id" type = "int" column = "cocktail_id">
+        <id name = "userId" type = "string" column = "user_id">
             <generator class="native"/>
         </id>
 
