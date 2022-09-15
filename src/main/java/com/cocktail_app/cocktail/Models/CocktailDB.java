@@ -17,18 +17,20 @@ public class CocktailDB {
     private String glassType;
     private String iceType;
     private Boolean isParent = false;
-    private String childrenIDs;
+    private String childrenIds;
     private Boolean isChild = false;
-    private Long parentID;
-    //TODO add bartenderID
+    private Long parentId;
+    private Long bartenderId;
+    private String thumbnails;
     //TODO: a field for "classic" or no bartenderID = classic?
-    //TODO: a field of List<String> for thumbnailIDs
 
     // empty constructor
     CocktailDB() {}
 
     // constructor with all items
-    public CocktailDB(Long id, String name, String tools, int difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIDs, Boolean isChild, Long parentID) {
+
+
+    public CocktailDB(Long id, String name, String tools, int difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIds, Boolean isChild, Long parentId, Long bartenderId, String thumbnails) {
         this.id = id;
         this.name = name;
         this.tools = tools;
@@ -38,136 +40,122 @@ public class CocktailDB {
         this.glassType = glassType;
         this.iceType = iceType;
         this.isParent = isParent;
-        this.childrenIDs = childrenIDs;
+        this.childrenIds = childrenIds;
         this.isChild = isChild;
-        this.parentID = parentID;
+        this.parentId = parentId;
+        this.bartenderId = bartenderId;
+        this.thumbnails = thumbnails;
     }
 
-    // constructor with all items except for ID
-    public CocktailDB(String name, String tools, int difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIDs, Boolean isChild, Long parentID) {
-        this.name = name;
-        this.tools = tools;
-        this.difficulty = difficulty;
-        this.instructions = instructions;
-        this.tags = tags;
-        this.glassType = glassType;
-        this.iceType = iceType;
-        this.isParent = isParent;
-        this.childrenIDs = childrenIDs;
-        this.isChild = isChild;
-        this.parentID = parentID;
-    }
-
-    // constructor with only non-null / required items
-    public CocktailDB(String name, String instructions) {
-        this.name = name;
-        this.instructions = instructions;
-    }
-
-    public Long getId() { return id; }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTools() {
-        return tools;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public String getGlassType() {
-        return glassType;
-    }
-
-    public String getIceType() {
-        return iceType;
-    }
-
-    public Boolean getIsParent() {
-        return isParent;
-    }
-
-    public String getChildrenIDs() {
-        return childrenIDs;
-    }
-
-    public Boolean getIsChild() {
-        return isChild;
-    }
-
-    public Long getParentID() {
-        return parentID;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTools() {
+        return tools;
     }
 
     public void setTools(String tools) {
         this.tools = tools;
     }
 
+    public int getDifficulty() {
+        return difficulty;
+    }
+
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getInstructions() {
+        return instructions;
     }
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public String getGlassType() {
+        return glassType;
     }
 
     public void setGlassType(String glassType) {
         this.glassType = glassType;
     }
 
+    public String getIceType() {
+        return iceType;
+    }
+
     public void setIceType(String iceType) {
         this.iceType = iceType;
+    }
+
+    public Boolean getIsParent() {
+        return isParent;
     }
 
     public void setIsParent(Boolean parent) {
         isParent = parent;
     }
 
-    public void setChildrenIDs(String childrenIDs) {
-        this.childrenIDs = childrenIDs;
+    public String getChildrenIds() {
+        return childrenIds;
+    }
+
+    public void setChildrenIds(String childrenIds) {
+        this.childrenIds = childrenIds;
+    }
+
+    public Boolean getIsChild() {
+        return isChild;
     }
 
     public void setIsChild(Boolean child) {
         isChild = child;
     }
 
-    public void setParentID(Long parentID) {
-        this.parentID = parentID;
+    public Long getParentId() {
+        return parentId;
     }
 
-    @Override
-    public String toString() {
-        return "Cocktail{" +
-                "name='" + name + '\'' +
-                ", tools='" + tools + '\'' +
-                ", difficulty=" + difficulty +
-                ", instructions='" + instructions + '\'' +
-                ", tags='" + tags + '\'' +
-                ", glassType='" + glassType + '\'' +
-                ", iceType='" + iceType + '\'' +
-                '}';
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Long getBartenderId() {
+        return bartenderId;
+    }
+
+    public void setBartenderId(Long bartenderId) {
+        this.bartenderId = bartenderId;
+    }
+
+    public String getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(String thumbnails) {
+        this.thumbnails = thumbnails;
     }
 }

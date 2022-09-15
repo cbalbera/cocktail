@@ -144,7 +144,6 @@ public class UserService {
         return output;
     }
 
-    //TODO
     public List<CocktailDTO> GetAlmostMakeableCocktails(UUID userId) {
         UserDB user = userRepo.findUserByUUID(userId);
         List<Long> pantry = converter.parseStringToListLong(user.getPantry());

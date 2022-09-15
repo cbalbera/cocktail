@@ -95,9 +95,9 @@ public class CocktailService {
         String childString = Long.toString(childId);
         if (!cocktail.getIsParent()) {
             cocktail.setIsParent(true);
-            cocktail.setChildrenIDs(childString);
+            cocktail.setChildrenIds(childString);
         } else {
-            cocktail.setChildrenIDs(cocktail.getChildrenIDs() + "~" + childString);
+            cocktail.setChildrenIds(cocktail.getChildrenIds() + "~" + childString);
         }
         cocktailRepo.save(cocktail);
         return cocktail;
@@ -119,7 +119,7 @@ public class CocktailService {
         if (cocktailDTO == null) { return null; }
         CocktailDB cocktail = converter.convertCocktailDTOToCocktailDB(cocktailDTO);
         cocktail.setIsChild(true);
-        cocktail.setParentID(parentId);
+        cocktail.setParentId(parentId);
         cocktailRepo.save(cocktail);
         return cocktail;
     }

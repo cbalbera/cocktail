@@ -68,11 +68,4 @@ public class UserControllerExternal {
         return this.userService.GetAlmostMakeableCocktails(userId);
     }
 
-    //TODO
-    //public List<Cocktail> GetAlmostMakeableCocktails
-    // this will likely have to be called strategically rather than upon page open
-    // in order to minimize loading time (perhaps cron only every [X] minutes?)
-    // especially so here, because time complexity is O(NK) * P where P is the
-    // number of params we are going to search on here
-
 }

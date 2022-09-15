@@ -17,6 +17,7 @@ public class CocktailConverter {
     public CocktailDB convertCocktailDTOToCocktailDB(CocktailDTO cocktail) {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         String instructions = listStringToString(cocktail.getInstructions());
+        String thumbnails = listStringToString(cocktail.getThumbnails());
         return new CocktailDB(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -27,9 +28,11 @@ public class CocktailConverter {
                 cocktail.getGlassType(),
                 cocktail.getIceType(),
                 cocktail.getIsParent(),
-                cocktail.getChildrenIDs(),
+                cocktail.getChildrenIds(),
                 cocktail.getIsChild(),
-                cocktail.getParentID()
+                cocktail.getParentId(),
+                cocktail.getBartenderId(),
+                thumbnails
         );
     }
 
@@ -37,6 +40,7 @@ public class CocktailConverter {
     public CocktailDTO convertCocktailDBToCocktailDTO(CocktailDB cocktail) {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
         List<String> instructions = parseStringToListString(cocktail.getInstructions());
+        List<String> thumbnails = parseStringToListString(cocktail.getThumbnails());
         return new CocktailDTO(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -47,9 +51,11 @@ public class CocktailConverter {
                 cocktail.getGlassType(),
                 cocktail.getIceType(),
                 cocktail.getIsParent(),
-                cocktail.getChildrenIDs(),
+                cocktail.getChildrenIds(),
                 cocktail.getIsChild(),
-                cocktail.getParentID()
+                cocktail.getParentId(),
+                cocktail.getBartenderId(),
+                thumbnails
         );
     }
 
