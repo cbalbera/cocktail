@@ -1,0 +1,11 @@
+notes re: GetMakeableCocktails
+- each Cocktail has to include at least one ALCOHOL or LIQUEUR. we only need to check combinations that include one of those two, so that will somewhat limit the looping
+- we can sort each User's Pantry by the ingredients' enum values (ALCOHOL = 0, LIQUEUR = 1) so we can check only the necessary combinations
+- one algo to generate all combinations: https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
+- one library: https://guava.dev/releases/snapshot/api/docs/com/google/common/collect/Sets.html
+- potential alternatives: https://www.baeldung.com/java-combinations-algorithm
+
+
+re: user preferences
+- have a user flavor/preference survey to kick off recommendations
+- get user feedback into drinks and feed back into reco algorithm

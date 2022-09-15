@@ -29,17 +29,4 @@ public class CocktailControllerExternal {
     public CocktailDTO getCocktailByID(@PathVariable Long id) {
         return this.cocktailService.findCocktailById(id);
     }
-
-    //TODO
-    //public List<Cocktail> GetMakeableCocktails
-    // this will likely have to be called strategically rather than upon page open
-    // in order to minimize loading time (perhaps cron only every [X] minutes?)
-    // because time complexity is O(NK) where N = # cocktails and K = # ingredients in pantry
-
-    //TODO
-    //public List<Cocktail> GetAlmostMakeableCocktails
-    // this will likely have to be called strategically rather than upon page open
-    // in order to minimize loading time (perhaps cron only every [X] minutes?)
-    // especially so here, because time complexity is O(NK) * P where P is the
-    // number of params we are going to search on here
 }

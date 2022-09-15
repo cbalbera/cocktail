@@ -93,8 +93,8 @@ public class UserService {
         }
     }
 
-    public CocktailDB findCocktailByID(Long cocktailId) {
-        return this.userRepo.findCocktailByID(cocktailId);
+    public CocktailDB findCocktailById(Long cocktailId) {
+        return this.userRepo.findCocktailById(cocktailId);
     }
 
     public List<CocktailDTO> getUserCocktails(UUID userId) {
@@ -105,7 +105,7 @@ public class UserService {
         List<CocktailDTO> output = new ArrayList<>();
         ListIterator<Long> iterator = user.getCocktailList().listIterator();
         while(iterator.hasNext()) {
-            CocktailDB cocktailDB = findCocktailByID(iterator.next());
+            CocktailDB cocktailDB = findCocktailById(iterator.next());
             CocktailDTO cocktailDTO = converter.convertCocktailDBToCocktailDTO(cocktailDB);
             output.add(cocktailDTO);
         }
@@ -114,6 +114,63 @@ public class UserService {
 
     public boolean existsById(UUID userId) {
         return this.userRepo.existsByUserId(userId);
+    }
+
+    public List<CocktailDTO> GetMakeableCocktails(UUID userId) {
+        UserDB user = userRepo.findUserByUUID(userId);
+        List<Long> pantry = converter.parseStringToListLong(user.getPantry());
+        List<CocktailDTO> output = new ArrayList<>();
+        List<CocktailDB> allCocktails = this.userRepo.getAllCocktails();
+        //TODO: is it more efficient DB-wise to pull all relationships and then break down by cocktail in Java
+        // or to pull relationships by cocktail when needed?  former is fewer calls to DB but an additional loop
+        // per cocktail to determine its set of relationships; latter is more calls to DB but no add'l loop
+        // for now, going with latter as afaik the DB query is faster in operational time?
+        //List<CocktailIngredientRelationship> allRelationships = this.userRepo.getAllRelationships();
+
+        // convert pantry to HashMap - one loop instead of N loops where N = no. of cocktails
+        Map<Long,Integer> ingredientMap = new HashMap<>();
+        for(int i = 0, n = pantry.size(); i < n; i++) {
+            ingredientMap.put(pantry.get(i),1);
+        }
+
+        for (int i = 0, n = allCocktails.size(); i < n; i++) {
+            CocktailDB cocktailDB = allCocktails.get(i);
+            Long id = cocktailDB.getId();
+            Boolean makeable = makeableHelper(id,0,ingredientMap);
+            if(makeable) {
+                output.add(converter.convertCocktailDBToCocktailDTO(cocktailDB));
+            }
+        }
+        return output;
+    }
+
+    //TODO
+    public List<CocktailDTO> GetAlmostMakeableCocktails(UUID userId) {
+        UserDB user = userRepo.findUserByUUID(userId);
+        List<Long> pantry = converter.parseStringToListLong(user.getPantry());
+        List<CocktailDTO> output = new ArrayList<>();
+        List<CocktailDB> allCocktails = this.userRepo.getAllCocktails();
+        //TODO: is it more efficient DB-wise to pull all relationships and then break down by cocktail in Java
+        // or to pull relationships by cocktail when needed?  former is fewer calls to DB but an additional loop
+        // per cocktail to determine its set of relationships; latter is more calls to DB but no add'l loop
+        // for now, going with latter as afaik the DB query is faster in operational time?
+        //List<CocktailIngredientRelationship> allRelationships = this.userRepo.getAllRelationships();
+
+        // convert pantry to HashMap - one loop instead of N loops where N = no. of cocktails
+        Map<Long,Integer> ingredientMap = new HashMap<>();
+        for(int i = 0, n = pantry.size(); i < n; i++) {
+            ingredientMap.put(pantry.get(i),1);
+        }
+
+        for (int i = 0, n = allCocktails.size(); i < n; i++) {
+            CocktailDB cocktailDB = allCocktails.get(i);
+            Long id = cocktailDB.getId();
+            Boolean makeable = makeableHelper(id,1,ingredientMap);
+            if(makeable) {
+                output.add(converter.convertCocktailDBToCocktailDTO(cocktailDB));
+            }
+        }
+        return output;
     }
 
     // private methods
@@ -198,6 +255,44 @@ public class UserService {
                 break;
         }
         return output;
+    }
+
+    // this method is O(2^n * n) as written, with slight reduction possible by only evaluating sets
+    // where there is at least 1 ALCOHOL or LIQUEUR
+    // as such, this (and methods that use it, such as those to determine makeable cocktails) is to
+    // be called strategically
+    private List<List<Long>> getPowerSetPantry(List<Long> pantry) {
+        List<List<Long>> output = new ArrayList<>();
+        List<Long> empty = new ArrayList<>();
+        output.add(empty);
+        for(int i = 0, n = pantry.size(); i < n; i++) {
+            for(int j = 0, p = output.size(); j < p; j++) {
+                List<Long> toAdd = new ArrayList<>();
+                toAdd.addAll(output.get(j));
+                toAdd.add(pantry.get(i));
+                output.add(toAdd);
+            }
+        }
+        // remove empty set; this is necessary for the algo to function but will cause query to throw
+        // error if empty set is passed
+        output.remove(0);
+        return output;
+    }
+
+    private boolean makeableHelper(Long cocktailId, int missingIngredientsAllowed, Map<Long, Integer> ingredientMap) {
+        int count = 0;
+        List<CocktailIngredientRelationship> relationships = this.userRepo.getCocktailRelationships(cocktailId);
+        for(int j = 0, p = relationships.size(); j < p; j++) {
+            CocktailIngredientRelationship relationship = relationships.get(j);
+            Long ingredientId = relationship.getIngredientId();
+            if(!ingredientMap.containsKey(ingredientId)) {
+                count += 1;
+                if (count > missingIngredientsAllowed) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }
