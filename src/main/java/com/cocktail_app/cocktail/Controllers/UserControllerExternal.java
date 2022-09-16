@@ -38,12 +38,12 @@ public class UserControllerExternal {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createUser(@RequestBody UserDB user) {
+    public ResponseEntity<UserDB> createUser(@RequestBody UserDB user) {
         short creationSuccess = userService.createUser(user);
         if (creationSuccess == 1) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
         }
     }
     // TODO: implement OAuth2.0 on the below endpoints after successful login

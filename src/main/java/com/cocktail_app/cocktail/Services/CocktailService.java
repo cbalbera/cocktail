@@ -89,17 +89,17 @@ public class CocktailService {
         return cocktailDB;
     }
 
-    //TODO: for the below - as well as for some in the relationship class - check whether IDs exist in database
-    // as long as this request isn't overly onerous
     public CocktailDB addChild(CocktailDB cocktail, Long childId) {
-        String childString = Long.toString(childId);
-        if (!cocktail.getIsParent()) {
-            cocktail.setIsParent(true);
-            cocktail.setChildrenIds(childString);
-        } else {
-            cocktail.setChildrenIds(cocktail.getChildrenIds() + "~" + childString);
+        if(this.cocktailRepo.existsById(childId)) {
+            String childString = Long.toString(childId);
+            if (!cocktail.getIsParent()) {
+                cocktail.setIsParent(true);
+                cocktail.setChildrenIds(childString);
+            } else {
+                cocktail.setChildrenIds(cocktail.getChildrenIds() + "~" + childString);
+            }
+            cocktailRepo.save(cocktail);
         }
-        cocktailRepo.save(cocktail);
         return cocktail;
     }
 
@@ -122,6 +122,10 @@ public class CocktailService {
         cocktail.setParentId(parentId);
         cocktailRepo.save(cocktail);
         return cocktail;
+    }
+
+    public boolean existsById(Long cocktailId) {
+        return this.cocktailRepo.existsById(cocktailId);
     }
 
     // private methods

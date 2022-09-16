@@ -82,6 +82,10 @@ public class IngredientService {
         return IngredientDB;
     }
 
+    public boolean existsById(Long ingredientId) {
+        return this.ingredientRepo.existsById(ingredientId);
+    }
+
     // private methods
 
     // class conversion methods

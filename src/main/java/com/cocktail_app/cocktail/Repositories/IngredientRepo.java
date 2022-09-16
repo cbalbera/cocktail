@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface IngredientRepo extends JpaRepository<IngredientDB,Long> {
-
     List<IngredientDB> findByName(String name);
+    boolean existsById(Long id);
 }

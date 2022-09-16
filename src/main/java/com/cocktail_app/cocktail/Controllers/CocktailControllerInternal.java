@@ -28,8 +28,8 @@ public class CocktailControllerInternal {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CocktailDB> updateCocktail(@PathVariable Long id, @RequestBody CocktailDTO cocktail) {
-        if(true) { //TODO: here, check if id is in db
+    public ResponseEntity<CocktailDB> updateCocktail(@PathVariable Long cocktailId, @RequestBody CocktailDTO cocktail) {
+        if(this.cocktailService.existsById(cocktailId)) {
             CocktailDB newCocktail = this.cocktailService.updateCocktail(cocktail);
             return new ResponseEntity<>(newCocktail, HttpStatus.OK);
         } else {
@@ -38,9 +38,9 @@ public class CocktailControllerInternal {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteCocktail(@PathVariable Long id) {
-        if(true) { //TODO: here, check if id is in db
-            this.cocktailService.deleteCocktail(id);
+    public ResponseEntity<Boolean> deleteCocktail(@PathVariable Long cocktailId) {
+        if(this.cocktailService.existsById(cocktailId)) {
+            this.cocktailService.deleteCocktail(cocktailId);
             return new ResponseEntity<>(true,HttpStatus.OK);
         } else {
             return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
@@ -49,7 +49,7 @@ public class CocktailControllerInternal {
 
     @PutMapping("/update/addChildren/{cocktailId}")
     public ResponseEntity<CocktailDB> addChildren(@PathVariable Long cocktailId, @RequestBody List<Long> childrenIDs) {
-        if(true) { //TODO: here, check if id is in db
+        if(this.cocktailService.existsById(cocktailId)) {
             CocktailDB newCocktail = this.cocktailService.addChildren(cocktailId,childrenIDs);
             return new ResponseEntity<>(newCocktail, HttpStatus.OK);
         } else {
@@ -59,7 +59,7 @@ public class CocktailControllerInternal {
 
     @PutMapping("/update/addParent/{cocktailId}")
     public ResponseEntity<CocktailDB> addParent(@PathVariable Long cocktailId, @RequestBody Long parentId) {
-        if(true) { //TODO: here, check if id is in db
+        if(this.cocktailService.existsById(cocktailId)) {
             CocktailDB newCocktail = this.cocktailService.addParent(cocktailId,parentId);
             return new ResponseEntity<>(newCocktail, HttpStatus.OK);
         } else {

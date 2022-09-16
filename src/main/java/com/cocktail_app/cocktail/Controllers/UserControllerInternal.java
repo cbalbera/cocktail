@@ -39,7 +39,7 @@ public class UserControllerInternal {
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<UserDB> updateUser(@PathVariable UUID userId, @RequestBody UserDB user) {
-        if(userService.existsById(userId)) { //TODO: here, check if id is in db
+        if(userService.existsById(userId)) {
             UserDB newUser = this.userService.addUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } else {
@@ -49,7 +49,7 @@ public class UserControllerInternal {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable UUID userId) {
-        if(true) { //TODO: here, check if id is in db
+        if(userService.existsById(userId)) {
             this.userService.deleteUser(userId);
             return new ResponseEntity<>(true,HttpStatus.OK);
         } else {

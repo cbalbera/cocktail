@@ -21,9 +21,7 @@ public class UserDTO {
     private String hashedPassword;
     private userType userType; // enumerated
     private List<Long> cocktailList;
-    // TODO: in pantry, do we want to account for quantity of each item?
-    // see reasoning in UserDB.java class - currently assuming no
-    // as such, pantry in UserDTO is a list of ingredient IDs of type Long
+    // moving fwd with assumption that pantry does not include quantities
     private List<Long> pantry;
     private List<Long> favoriteCocktails;
     private List<Long> favoriteBartenders;
