@@ -68,4 +68,9 @@ public class UserControllerExternal {
         return this.userService.GetAlmostMakeableCocktails(userId);
     }
 
+    @PostMapping("/startup/cocktails")
+    public List<CocktailDTO> GetCocktailsOnStartup(@RequestBody UUID userId) {
+        return  this.userService.getAllCocktailsByUser(userId);
+    }
+
 }
