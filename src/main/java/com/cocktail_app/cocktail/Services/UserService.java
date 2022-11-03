@@ -14,17 +14,25 @@ import java.util.*;
 public class UserService {
 
     public UserRepo userRepo;
+
+    public CocktailIngredientRelationshipService relationshipService;
+
+    public IngredientService ingredientService;
     //TODO: examine if we should have a superclass for all Services to abstract away creation of the sessionfactory (next 10 lines)
     private SessionFactory hibernateFactory;
     public CocktailConverter converter;
 
     @Autowired
-    public UserService(EntityManagerFactory factory, UserRepo userRepo, CocktailConverter converter) {
+    public UserService(EntityManagerFactory factory, UserRepo userRepo, CocktailIngredientRelationshipService relationshipService,
+                       IngredientService ingredientService,
+                       CocktailConverter converter) {
         if(factory.unwrap(SessionFactory.class) == null){
             throw new NullPointerException("factory is not a hibernate factory");
         }
         this.hibernateFactory = factory.unwrap(SessionFactory.class);
         this.userRepo = userRepo;
+        this.relationshipService = relationshipService;
+        this.ingredientService = ingredientService;
         this.converter = converter;
     }
 
@@ -119,6 +127,48 @@ public class UserService {
 
     public boolean existsById(UUID userId) {
         return this.userRepo.existsByUserId(userId);
+    }
+
+
+    //this would be generated on app startup or changes to the bar
+    public List<CocktailDTO> getAllCocktailsByUser(UUID userId) {
+        UserDB user = userRepo.findUserByUUID(userId);
+
+        List<Long> pantry = converter.parseStringToListLong(user.getPantry());
+
+        List<CocktailIngredientRelationship> relationships = relationshipService.getRelationships();
+
+        // convert pantry to HashMap - one loop instead of N loops where N = no. of cocktails
+        Map<Long,Boolean> ingredientMap = new HashMap<>();
+        for(int i = 0, n = pantry.size(); i < n; i++) {
+            ingredientMap.put(pantry.get(i),true);
+        }
+
+        List<CocktailDB> allCocktailsDBs = this.userRepo.getAllCocktails();
+        HashMap<Long, CocktailDTO> allCocktails = new HashMap<>();
+
+        //convert all of the db objects to DTOs
+        for (CocktailDB cocktailDB: allCocktailsDBs) {
+            allCocktails.put(cocktailDB.getId(), converter.convertCocktailDBToCocktailDTO(cocktailDB));
+        }
+
+        //map relationships to cocktails and check bar for ingredients that the user has
+        for(CocktailIngredientRelationship relationship : relationships){
+            boolean ingredientInPantry;
+            if(ingredientMap.get(relationship.getIngredientId())){
+                ingredientInPantry = true;
+            } else {
+                ingredientInPantry = false;
+            }
+            allCocktails.get(relationship.getCocktailId()).getIngredients().put(ingredientService.findIngredientById(relationship.getIngredientId()), ingredientInPantry);
+            if(ingredientInPantry){
+                allCocktails.get(relationship.getCocktailId()).incrementNumIngredientsInBar();
+            }
+        }
+
+        List<CocktailDTO> finalCocktailList = new ArrayList(allCocktails.values());
+
+        return finalCocktailList;
     }
 
     public List<CocktailDTO> GetMakeableCocktails(UUID userId) {

@@ -1,6 +1,7 @@
 package com.cocktail_app.cocktail.Models;
 
 import java.util.List;
+import java.util.Map;
 
 public class CocktailDTO {
 
@@ -26,6 +27,10 @@ public class CocktailDTO {
     private Long bartenderId;
     private List<String> thumbnails;
 
+    private Map<IngredientDTO, Boolean> ingredients;
+
+    private int numIngredientsInBar = 0;
+
     // empty constructor
     CocktailDTO() {}
 
@@ -47,6 +52,7 @@ public class CocktailDTO {
         this.parentId = parentId;
         this.bartenderId = bartenderId;
         this.thumbnails = thumbnails;
+        this.numIngredientsInBar = 0;
     }
 
     public Long getId() {
@@ -159,6 +165,18 @@ public class CocktailDTO {
 
     public void setThumbnails(List<String> thumbnails) {
         this.thumbnails = thumbnails;
+    }
+
+    public void setIngredients(Map<IngredientDTO, Boolean> ingredients) { this.ingredients = ingredients; }
+
+    public Map<IngredientDTO, Boolean> getIngredients() {return ingredients;}
+
+    public void setNumIngredientsInBar(int numIngredientsInBar) {this.numIngredientsInBar = numIngredientsInBar; }
+
+    public int getNumIngredientsInBar() {return numIngredientsInBar; }
+
+    public void incrementNumIngredientsInBar() {
+        numIngredientsInBar +=1;
     }
 
     @Override

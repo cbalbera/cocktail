@@ -4,23 +4,6 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="cleanup of todo's in various classes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerInternal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerInternal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Helpers/CocktailConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Helpers/CocktailConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/IngredientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/UserRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailIngredientRelationshipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailIngredientRelationshipService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/CocktailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/IngredientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/IngredientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/CocktailIngredientRelationship.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/CocktailIngredientRelationship.hbm.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/IngredientDB.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/IngredientDB.hbm.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +19,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JpbToolWindowState">

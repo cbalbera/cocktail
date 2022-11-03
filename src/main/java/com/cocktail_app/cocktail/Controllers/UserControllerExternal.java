@@ -65,9 +65,16 @@ public class UserControllerExternal {
         return this.userService.GetAlmostMakeableCocktails(userId);
     }
 
+
+    @PostMapping("/startup/cocktails")
+    public List<CocktailDTO> GetCocktailsOnStartup(@RequestBody UUID userId) {
+        return  this.userService.getAllCocktailsByUser(userId);
+    }
+
     @PutMapping("/profile/updatepantry/{userId}")
     public List<IngredientDTO> updatePantry(@RequestBody List<Long> newPantry, @PathVariable UUID userId) {
         return this.userService.updatePantry(userId,newPantry);
+
     }
 
 }
