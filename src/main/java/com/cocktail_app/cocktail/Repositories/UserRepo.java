@@ -2,14 +2,16 @@ package com.cocktail_app.cocktail.Repositories;
 
 import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Models.CocktailIngredientRelationship;
+import com.cocktail_app.cocktail.Models.IngredientDB;
 import com.cocktail_app.cocktail.Models.UserDB;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -40,6 +42,15 @@ public interface UserRepo extends JpaRepository<UserDB,Long> {
 
     @Query(value="SELECT u FROM CocktailIngredientRelationship u WHERE cocktailId =:id")
     List<CocktailIngredientRelationship> getCocktailRelationships(@Param("id") Long id);
+
+    @Query(value="SELECT u FROM IngredientDB u WHERE ingredient_id=:id")
+    IngredientDB findIngredientById(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserDB u SET u.pantry = :pantry WHERE id=:id")
+    void updatePantry(@Param("pantry") String pantry, @Param("id") UUID id);
+    // https://docs.spring.io/spring-data/data-jpa/docs/current/reference/html/#jpa.modifying-queries
 
     /*
     @Query(value="SELECT CocktailDB.name, CocktailDB.id " +

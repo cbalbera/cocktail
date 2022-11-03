@@ -1,6 +1,5 @@
 package com.cocktail_app.cocktail.Controllers;
 
-import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Models.UserDB;
 import com.cocktail_app.cocktail.Models.UserDTO;
 import com.cocktail_app.cocktail.Services.UserService;

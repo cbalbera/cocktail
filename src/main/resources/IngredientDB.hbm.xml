@@ -10,7 +10,7 @@
             This class contains the attributes of one ingredient.
         </meta>
 
-        <id name = "id" type = "int" column = "ingredientId">
+        <id name = "id" type = "int" column = "ingredient_id">
             <generator class="native"/>
         </id>
 

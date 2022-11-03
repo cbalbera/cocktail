@@ -26,6 +26,7 @@ public class UserDTO {
     private List<Long> favoriteCocktails;
     private List<Long> favoriteBartenders;
     private int zipCode;
+    private int numIngredientsInBar;
 
     // empty constructor
     public UserDTO() {

@@ -1,9 +1,6 @@
 package com.cocktail_app.cocktail.Controllers;
 
-import com.cocktail_app.cocktail.Models.CocktailDB;
-import com.cocktail_app.cocktail.Models.CocktailDTO;
-import com.cocktail_app.cocktail.Models.UserDB;
-import com.cocktail_app.cocktail.Models.UserDTO;
+import com.cocktail_app.cocktail.Models.*;
 import com.cocktail_app.cocktail.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +63,11 @@ public class UserControllerExternal {
     @PostMapping("/profile/almostmakeablecocktails")
     public List<CocktailDTO> GetAlmostMakeableCocktails(@RequestBody UUID userId) {
         return this.userService.GetAlmostMakeableCocktails(userId);
+    }
+
+    @PutMapping("/profile/updatepantry/{userId}")
+    public List<IngredientDTO> updatePantry(@RequestBody List<Long> newPantry, @PathVariable UUID userId) {
+        return this.userService.updatePantry(userId,newPantry);
     }
 
 }

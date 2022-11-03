@@ -2,7 +2,7 @@ package com.cocktail_app.cocktail.Models;
 
 import javax.persistence.*;
 
-@Entity(name = "Ingredient")
+@Entity(name = "IngredientDB")
 @Table(name = "INGREDIENTS")
 public class IngredientDB {
 
