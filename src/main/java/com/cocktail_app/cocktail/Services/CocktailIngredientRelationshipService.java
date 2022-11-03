@@ -1,7 +1,6 @@
 package com.cocktail_app.cocktail.Services;
 
 import com.cocktail_app.cocktail.Models.CocktailIngredientRelationship;
-import com.cocktail_app.cocktail.Models.IngredientDB;
 import com.cocktail_app.cocktail.Repositories.CocktailIngredientRelationshipRepo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

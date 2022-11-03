@@ -40,7 +40,7 @@ public class IngredientController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteIngredient(@PathVariable Long id) {
-        if(true) { //TODO: here, check if id is in db
+        if(this.ingredientService.existsById(id)) {
             this.ingredientService.deleteIngredient(id);
             return new ResponseEntity<>(true,HttpStatus.OK);
         } else {

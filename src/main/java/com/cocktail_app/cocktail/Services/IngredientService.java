@@ -1,6 +1,6 @@
 package com.cocktail_app.cocktail.Services;
 
-import com.cocktail_app.cocktail.Models.CocktailDB;
+import com.cocktail_app.cocktail.Helpers.CocktailConverter;
 import com.cocktail_app.cocktail.Models.IngredientDB;
 import com.cocktail_app.cocktail.Models.IngredientDTO;
 import com.cocktail_app.cocktail.Repositories.IngredientRepo;
@@ -21,14 +21,16 @@ public class IngredientService {
 
     //TODO: examine if we should have a superclass for all Services to abstract away creation of the sessionfactory (next 10 lines)
     private SessionFactory hibernateFactory;
+    public CocktailConverter converter;
 
     @Autowired
-    public IngredientService(EntityManagerFactory factory, IngredientRepo ingredientRepo) {
+    public IngredientService(EntityManagerFactory factory, IngredientRepo ingredientRepo, CocktailConverter converter) {
         if(factory.unwrap(SessionFactory.class) == null){
             throw new NullPointerException("factory is not a hibernate factory");
         }
         this.hibernateFactory = factory.unwrap(SessionFactory.class);
         this.ingredientRepo = ingredientRepo;
+        this.converter = converter;
     }
 
     public List<IngredientDTO> getIngredients() {
@@ -37,7 +39,7 @@ public class IngredientService {
         List<IngredientDTO> output = new ArrayList<IngredientDTO>();
         ListIterator<IngredientDB> Iterator = ingredients.listIterator();
         while (Iterator.hasNext()) {
-            IngredientDTO ingredient = convertIngredientDBToIngredientDTO(Iterator.next());
+            IngredientDTO ingredient = converter.convertIngredientDBToIngredientDTO(Iterator.next());
             output.add(ingredient);
         }
         return output;
@@ -66,7 +68,7 @@ public class IngredientService {
         Optional<IngredientDB> ingredientOptional = ingredientRepo.findById(id);
         if (ingredientOptional.isPresent()) {
             IngredientDB IngredientDB = ingredientOptional.get();
-            return convertIngredientDBToIngredientDTO(IngredientDB);
+            return converter.convertIngredientDBToIngredientDTO(IngredientDB);
         } else {
             return null;
         }
@@ -77,87 +79,15 @@ public class IngredientService {
     }
 
     public IngredientDB updateCocktail(IngredientDTO ingredient) {
-        IngredientDB IngredientDB = convertIngredientDTOToIngredientDB(ingredient);
+        IngredientDB IngredientDB = converter.convertIngredientDTOToIngredientDB(ingredient);
         ingredientRepo.save(IngredientDB);
         return IngredientDB;
     }
 
+    public boolean existsById(Long ingredientId) {
+        return this.ingredientRepo.existsById(ingredientId);
+    }
+
     // private methods
-
-    // class conversion methods
-    // DB > DTO
-    private IngredientDTO convertIngredientDBToIngredientDTO(IngredientDB ingredient) {
-        IngredientDTO.ingredientType type = ingredientTypeIntToEnum(ingredient.getType());
-        return new IngredientDTO(
-                ingredient.getId(),
-                ingredient.getName(),
-                type
-        );
-    }
-
-    // DTO > DB
-    private IngredientDB convertIngredientDTOToIngredientDB(IngredientDTO ingredient) {
-        int type = ingredientTypeEnumToInt(ingredient.getType());
-        return new IngredientDB(
-                ingredient.getId(),
-                ingredient.getName(),
-                type
-        );
-    }
-
-    // enumeration conversion methods
-    // int to enum
-    private IngredientDTO.ingredientType ingredientTypeIntToEnum(int type) {
-        IngredientDTO.ingredientType output = IngredientDTO.ingredientType.ALCOHOL;
-        switch(type) {
-            case 0:
-                break;
-            case 1:
-                output = IngredientDTO.ingredientType.LIQUEUR;
-                break;
-            case 2:
-                output = IngredientDTO.ingredientType.MIXER;
-                break;
-            case 3:
-                output = IngredientDTO.ingredientType.FRUIT;
-                break;
-            case 4:
-                output = IngredientDTO.ingredientType.VEGETABLE;
-                break;
-            case 5:
-                output = IngredientDTO.ingredientType.SEASONING;
-                break;
-            default:
-                break;
-        }
-        return output;
-    }
-
-    // enum to int
-    private int ingredientTypeEnumToInt(IngredientDTO.ingredientType type) {
-        int output = 0;
-        switch(type) {
-            case ALCOHOL:
-                break;
-            case LIQUEUR:
-                output = 1;
-                break;
-            case MIXER:
-                output = 2;
-                break;
-            case FRUIT:
-                output = 3;
-                break;
-            case VEGETABLE:
-                output = 4;
-                break;
-            case SEASONING:
-                output = 5;
-                break;
-            default:
-                break;
-        }
-        return output;
-    }
 
 }

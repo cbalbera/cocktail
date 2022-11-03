@@ -2,6 +2,8 @@ package com.cocktail_app.cocktail.Helpers;
 
 import com.cocktail_app.cocktail.Models.CocktailDB;
 import com.cocktail_app.cocktail.Models.CocktailDTO;
+import com.cocktail_app.cocktail.Models.IngredientDB;
+import com.cocktail_app.cocktail.Models.IngredientDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -149,6 +151,8 @@ public class CocktailConverter {
     }
 
     // String to List<Long>
+    // used for items in User classes:
+    // cocktailList, pantry, favoriteCocktails, favoriteBartenders
     public List<Long> parseStringToListLong(String string) {
         if (string == null) { return null; }
         // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
@@ -171,12 +175,90 @@ public class CocktailConverter {
     }
 
     // List<Long> to String
+    // used for items in User classes:
+    // cocktailList, pantry, favoriteCocktails, favoriteBartenders
     public String listLongToString(List<Long> listLong) {
         if (listLong == null) { return null; }
         String output = listLong
                 .stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining("~"));
+        return output;
+    }
+
+    // Ingredient type conversion methods and enumeration methods
+    // IngredientDB to IngredientDTO
+    public IngredientDTO convertIngredientDBToIngredientDTO(IngredientDB ingredient) {
+        IngredientDTO.ingredientType type = ingredientTypeIntToEnum(ingredient.getType());
+        return new IngredientDTO(
+                ingredient.getId(),
+                ingredient.getName(),
+                type
+        );
+    }
+
+    // DTO > DB
+    public IngredientDB convertIngredientDTOToIngredientDB(IngredientDTO ingredient) {
+        int type = ingredientTypeEnumToInt(ingredient.getType());
+        return new IngredientDB(
+                ingredient.getId(),
+                ingredient.getName(),
+                type
+        );
+    }
+
+    // Ingredient type enumeration conversion methods
+    // ingredientType int to enum
+    private IngredientDTO.ingredientType ingredientTypeIntToEnum(int type) {
+        IngredientDTO.ingredientType output = IngredientDTO.ingredientType.ALCOHOL;
+        switch(type) {
+            case 0:
+                break;
+            case 1:
+                output = IngredientDTO.ingredientType.LIQUEUR;
+                break;
+            case 2:
+                output = IngredientDTO.ingredientType.MIXER;
+                break;
+            case 3:
+                output = IngredientDTO.ingredientType.FRUIT;
+                break;
+            case 4:
+                output = IngredientDTO.ingredientType.VEGETABLE;
+                break;
+            case 5:
+                output = IngredientDTO.ingredientType.SEASONING;
+                break;
+            default:
+                break;
+        }
+        return output;
+    }
+
+    // ingredientType enum to int
+    private int ingredientTypeEnumToInt(IngredientDTO.ingredientType type) {
+        int output = 0;
+        switch(type) {
+            case ALCOHOL:
+                break;
+            case LIQUEUR:
+                output = 1;
+                break;
+            case MIXER:
+                output = 2;
+                break;
+            case FRUIT:
+                output = 3;
+                break;
+            case VEGETABLE:
+                output = 4;
+                break;
+            case SEASONING:
+                output = 5;
+                break;
+            default:
+                break;
+        }
         return output;
     }
 }

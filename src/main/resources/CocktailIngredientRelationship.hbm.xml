@@ -11,12 +11,12 @@
             This class contains the attributes of one cocktail-ingredient relationship.
         </meta>
 
-        <id name = "id" type = "int" column = "cocktail_id">
+        <id name = "id" type = "int" column = "relationship_id">
             <generator class="native"/>
         </id>
 
-        <property name = "name" column = "cocktailId" type = "int"/>
-        <property name = "name" column = "ingredientId" type = "int"/>
+        <property name = "cocktailId" column = "cocktail_id" type = "int"/>
+        <property name = "ingredientId" column = "ingredient_id" type = "int"/>
 
     </class>
 </hibernate-mapping>

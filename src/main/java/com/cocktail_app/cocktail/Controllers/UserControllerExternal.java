@@ -1,9 +1,6 @@
 package com.cocktail_app.cocktail.Controllers;
 
-import com.cocktail_app.cocktail.Models.CocktailDB;
-import com.cocktail_app.cocktail.Models.CocktailDTO;
-import com.cocktail_app.cocktail.Models.UserDB;
-import com.cocktail_app.cocktail.Models.UserDTO;
+import com.cocktail_app.cocktail.Models.*;
 import com.cocktail_app.cocktail.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +35,12 @@ public class UserControllerExternal {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createUser(@RequestBody UserDB user) {
+    public ResponseEntity<UserDB> createUser(@RequestBody UserDB user) {
         short creationSuccess = userService.createUser(user);
         if (creationSuccess == 1) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
         }
     }
     // TODO: implement OAuth2.0 on the below endpoints after successful login
@@ -68,9 +65,16 @@ public class UserControllerExternal {
         return this.userService.GetAlmostMakeableCocktails(userId);
     }
 
+
     @PostMapping("/startup/cocktails")
     public List<CocktailDTO> GetCocktailsOnStartup(@RequestBody UUID userId) {
         return  this.userService.getAllCocktailsByUser(userId);
+    }
+
+    @PutMapping("/profile/updatepantry/{userId}")
+    public List<IngredientDTO> updatePantry(@RequestBody List<Long> newPantry, @PathVariable UUID userId) {
+        return this.userService.updatePantry(userId,newPantry);
+
     }
 
 }

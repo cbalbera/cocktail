@@ -4,11 +4,6 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="attempt to add Hibernate db access to Cocktail class">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +13,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -68,6 +64,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
@@ -160,7 +157,161 @@
       <option name="project" value="LOCAL" />
       <updated>1661801826253</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="working API endpoints">
+      <created>1661985058634</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1661985058634</updated>
+    </task>
+    <task id="LOCAL-00006" summary="working API endpoints">
+      <created>1661986255342</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1661986255342</updated>
+    </task>
+    <task id="LOCAL-00007" summary="separated internal-facing API endpoints for put/post and added delete">
+      <created>1661986714977</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1661986714977</updated>
+    </task>
+    <task id="LOCAL-00008" summary="separated internal-facing API endpoints for put/post and added delete">
+      <created>1661986733984</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1661986733984</updated>
+    </task>
+    <task id="LOCAL-00009" summary="built out Ingredient API and misc updates to Cocktail">
+      <created>1662051674196</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1662051674196</updated>
+    </task>
+    <task id="LOCAL-00010" summary="created relationship object &amp; made other minor updates">
+      <created>1662068883555</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1662068883555</updated>
+    </task>
+    <task id="LOCAL-00011" summary="created relationship object &amp; made other minor updates">
+      <created>1662131555436</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1662131555436</updated>
+    </task>
+    <task id="LOCAL-00012" summary="created relationship object &amp; made other minor updates">
+      <created>1662131955716</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1662131955716</updated>
+    </task>
+    <task id="LOCAL-00013" summary="working endpoints for relationship controller">
+      <created>1662135055133</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1662135055133</updated>
+    </task>
+    <task id="LOCAL-00014" summary="working endpoints for relationship controller search">
+      <created>1662147061683</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1662147061683</updated>
+    </task>
+    <task id="LOCAL-00015" summary="null case handled for relationship search">
+      <created>1662148763146</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1662148763146</updated>
+    </task>
+    <task id="LOCAL-00016" summary="null case handled for relationship search">
+      <created>1662154711697</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1662154711698</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Argon2 password encoding functionality and User account structure among other minor updates">
+      <created>1662522606882</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1662522606882</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Argon2 password encoding functionality finalized">
+      <created>1662562912046</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1662562912046</updated>
+    </task>
+    <task id="LOCAL-00019" summary="user classes up through rest controllers fleshed out &amp; other minor changes">
+      <created>1662565330194</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1662565330194</updated>
+    </task>
+    <task id="LOCAL-00020" summary="updated service classes with comments, public/private organization">
+      <created>1662565758975</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1662565758975</updated>
+    </task>
+    <task id="LOCAL-00021" summary="continued work on service and controller classes">
+      <created>1662566628144</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1662566628144</updated>
+    </task>
+    <task id="LOCAL-00022" summary="created cocktail converter helper &amp; minor updates to user classes as well as other related classes">
+      <created>1662996186595</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1662996186595</updated>
+    </task>
+    <task id="LOCAL-00023" summary="User cocktail endpoint &amp; various minor updates">
+      <created>1663086898776</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1663086898776</updated>
+    </task>
+    <task id="LOCAL-00024" summary="implemented makeable &amp; almost-makeable cocktail search for users">
+      <created>1663266365959</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1663266365960</updated>
+    </task>
+    <task id="LOCAL-00025" summary="added fields for bartender and thumbnails to Cocktail class">
+      <created>1663267653700</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1663267653700</updated>
+    </task>
+    <task id="LOCAL-00026" summary="cleanup of todo's in various classes">
+      <created>1663337656603</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1663337656603</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,6 +330,25 @@
     <MESSAGE value="added class config files and testing push to db via Hibernate" />
     <MESSAGE value="cocktail table connected via Hibernate" />
     <MESSAGE value="created service, repository, and REST controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="created service, repository, and REST controller" />
+    <MESSAGE value="working API endpoints" />
+    <MESSAGE value="separated internal-facing API endpoints for put/post and added delete" />
+    <MESSAGE value="built out Ingredient API and misc updates to Cocktail" />
+    <MESSAGE value="created relationship object &amp; made other minor updates" />
+    <MESSAGE value="working endpoints for relationship controller" />
+    <MESSAGE value="working endpoints for relationship controller search" />
+    <MESSAGE value="null case handled for relationship search" />
+    <MESSAGE value="Argon2 password encoding functionality and User account structure among other minor updates" />
+    <MESSAGE value="Argon2 password encoding functionality finalized" />
+    <MESSAGE value="user classes up through rest controllers fleshed out" />
+    <MESSAGE value="user classes up through rest controllers fleshed out &amp; other minor changes" />
+    <MESSAGE value="updated service classes with comments, public/private organization" />
+    <MESSAGE value="continued work on service and controller classes" />
+    <MESSAGE value="implemented endpoints for login and user creation" />
+    <MESSAGE value="created cocktail converter helper &amp; minor updates to user classes as well as other related classes" />
+    <MESSAGE value="User cocktail endpoint &amp; various minor updates" />
+    <MESSAGE value="implemented makeable &amp; almost-makeable cocktail search for users" />
+    <MESSAGE value="added fields for bartender and thumbnails to Cocktail class" />
+    <MESSAGE value="cleanup of todo's in various classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup of todo's in various classes" />
   </component>
 </project>

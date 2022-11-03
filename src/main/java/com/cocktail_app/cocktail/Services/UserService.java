@@ -93,6 +93,12 @@ public class UserService {
     // used short return type here to enable different types of rejection, although currently only checking by email
     public short createUser(UserDB user) {
         if (!userRepo.existsByEmail(user.getEmail())) {
+            // sort user's pantry - this will save time in future calls
+            // specifically within updatePantry
+            List<Long> pantry = converter.parseStringToListLong(user.getPantry());
+            Collections.sort(pantry);
+            user.setPantry(converter.listLongToString(pantry));
+            // add user
             addUser(user);
             return 1;
         } else {
@@ -217,6 +223,90 @@ public class UserService {
             if(makeable) {
                 output.add(converter.convertCocktailDBToCocktailDTO(cocktailDB));
             }
+        }
+        return output;
+    }
+
+    public List<IngredientDTO> updatePantry(UUID userId, List<Long> newPantry) {
+        // newPantry will be given in the form of a list of IDs in form Long
+        // that represent IngredientDTO.
+        // IDs with negative values will be those whose presence in the pantry
+        // have been **changed** - that includes addition or deletion
+        // the list will be sorted, which will float all negative IDs to the
+        // front; this will enable us to search for only those in a copy of the
+        // user's existing pantry and either add it (if it doesn't exist) or
+        // delete it if it does.  for each item, we can pop off the ID from the
+        // existing pantry list if it already exists to shorten lookup time of
+        // future items; we will also keep track of index in existing pantry to
+        // further shorten lookup times and ensure we only need one nested loop
+        // to accomplish this update
+        // TODO handle case where pantry is null
+        // TODO check that each ingredient id exists in db
+        UserDB user = userRepo.findUserByUUID(userId);
+        List<Long> userPantryCopy = converter.parseStringToListLong(user.getPantry());
+        System.out.println("userPantryCopy is "+userPantryCopy);
+        System.out.println("newPantry is "+newPantry);
+        Collections.sort(newPantry); // TODO confirm this works
+        System.out.println("newPantry is now "+newPantry);
+        // user pantries are already sorted ascending in addUser
+        int i = 0, j = userPantryCopy.size()-1;
+        while(newPantry.get(i) < 0) {
+            Long idValue = -1*newPantry.get(i);
+            System.out.println("evaluating i of "+i+", idValue of "+idValue);
+            while (j > 0 && idValue < userPantryCopy.get(j)) {
+                // skip this element by decrementing j
+                System.out.println("skipping index of "+j+" with id of "+userPantryCopy.get(j));
+                j--;
+            }
+            // if, after skipping all items greater than current idValue
+            // we find a match --> change is a delete
+            System.out.println("found match at index of "+j);
+            if (idValue == userPantryCopy.get(j)) {
+                System.out.println("deleting at index of "+j+" to remove id of "+userPantryCopy.get(j));
+                // delete item
+                userPantryCopy.remove(j);
+                j = Math.max(j-1,0);
+                System.out.println("j is now "+j);
+            } else {
+                System.out.println("adding id of "+idValue+" at index of "+(j+1));
+                // this item did not already exist in pantry -->
+                // change is an add
+                userPantryCopy.add(j+1,idValue);
+            }
+            if (j == -1) {
+                // add all remaining changed ingredients - all ingredients
+                // with negative values
+                while (newPantry.get(i) < 0) {
+                    idValue = -1*newPantry.get(i);
+                    userPantryCopy.add(0,idValue);
+                    i++;
+                }
+
+                // break out of loop
+                break;
+            }
+            // increment i to search for next changed ingredient ID
+            i++;
+        }
+        // here, we could do nothing & simply persist the new pantry to the
+        // database via conversion of List<Long> to String
+
+        //TODO test me
+        String userNewPantry = converter.listLongToString(userPantryCopy);
+        System.out.println("newPantry is "+userNewPantry);
+        userRepo.updatePantry(userNewPantry,userId);
+
+        // I am also going to have this output List<IngredientDTO> using this
+        // last loop because I expect we will want to show the user their new
+        // pantry once it has been updated
+
+        // there is also the potential to have this run faster by doing the
+        // conversion within the nested while loop above
+        //TODO these next five lines should probably be a helper function
+        List<IngredientDTO> output = new ArrayList<>();
+        for (Long k:userPantryCopy) {
+            IngredientDB ingredientDB = userRepo.findIngredientById(k);
+            output.add(converter.convertIngredientDBToIngredientDTO(ingredientDB));
         }
         return output;
     }

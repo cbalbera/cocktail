@@ -24,12 +24,7 @@ public class UserDB {
     private String hashedPassword;
     private int userType; // enumerated
     private String cocktailList;
-    // TODO: in pantry, do we want to account for quantity of each item?
-    // current thought is no due to scope - we're not currently building a pantry app
-    // but may frustrate users if we say they can make something and they actually can't
-    // given that we have the information needed (e.g. quantity of each ingredient needed
-    // to make each drink) to make this a relatively trivial calculation should we choose
-    // to go this way
+    // moving fwd with assumption that pantry does not include quantities
     private String pantry;
     private String favoriteCocktails;
     private String favoriteBartenders;

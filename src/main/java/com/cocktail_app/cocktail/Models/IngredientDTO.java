@@ -12,7 +12,6 @@ public class IngredientDTO {
         SEASONING
     }
     private Long id;
-
     private String name;
     private ingredientType type;
 

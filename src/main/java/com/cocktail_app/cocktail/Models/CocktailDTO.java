@@ -22,7 +22,7 @@ public class CocktailDTO {
     private String iceType;
     private Boolean isParent = false;
     private String childrenIds;
-    private Boolean isChild  = false;
+    private Boolean isChild = false;
     private Long parentId;
     private Long bartenderId;
     private List<String> thumbnails;
