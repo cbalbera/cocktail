@@ -55,6 +55,7 @@ public class UserControllerExternal {
         return this.userService.getUserCocktails(userId);
     }
 
+    /*
     @PostMapping("/profile/makeablecocktails")
     public List<CocktailDTO> GetMakeableCocktails(@RequestBody UUID userId) {
         return this.userService.GetMakeableCocktails(userId);
@@ -65,15 +66,22 @@ public class UserControllerExternal {
         return this.userService.GetAlmostMakeableCocktails(userId);
     }
 
+     */
+
 
     @PostMapping("/startup/cocktails")
     public List<CocktailDTO> GetCocktailsOnStartup(@RequestBody UUID userId) {
         return  this.userService.getAllCocktailsByUser(userId);
     }
 
+    // front end will handle sending new pantry list:
     @PutMapping("/profile/updatepantry/{userId}")
     public List<IngredientDTO> updatePantry(@RequestBody List<Long> newPantry, @PathVariable UUID userId) {
-        return this.userService.updatePantry(userId,newPantry);
+        // could modify the next two lines so that they are handled by a helper within userService
+        List<HashSet<Long>> modifiedList = this.userService.updatePantry(userId,newPantry);
+        // TODO: figure out how to run these two concurrently
+        //this.userService.updateAllCocktailsByUserUponChange(userId,modifiedList);
+        return this.userService.getPantry(userId);
 
     }
 

@@ -1,3 +1,35 @@
+TODO:
+1. finish update function (see comments)
+2. auth
+3. add "last changed" to user table (re: pantry)
+
+Auth
+- API endpoints will have to take in auth token and validate from FE
+- if expired, send back an error (TODO figure out error code in 300's)
+- ??then, force FE to send refresh token (or FE can auto-send refresh token)??
+- at that point BE will send FE a new refresh and auth token (so only new login will be needed if >30 days [whatever refresh token life is] since last login)
+- frequent updates of refresh token keeps it from getting stale / exposed on network monitoring
+- db will have public key, stored in user table
+- if invalid, fresh login (authenticate user, pwd)
+- TODO: add authorization profile types? (for now, bool flag is_admin)
+- could use @Authorization annotation or have an auth service
+
+Said differently:
+FE: do we have a token?  yes > send, no > login
+BE: did we get a token?
+    > yes & both ok: good
+    > yes & only refresh is still good: send two new tokens
+    > yes & both no good (expired, wrong): force login
+    > no: force login (if this is happening, someone may be trying to force a login)
+
+Note: DB has been deleted, so will have to recreate.  use local for now.
+
+Future:
+- if 'last changed' flag hits for user pantry, take them direct to ingredients page and ask to confirm if they still have all of the ingredients (showing the ones they had in pantry last time at top)
+
+
+Earlier notes:
+
 notes re: GetMakeableCocktails
 - each Cocktail has to include at least one ALCOHOL or LIQUEUR. we only need to check combinations that include one of those two, so that will somewhat limit the looping
 - we can sort each User's Pantry by the ingredients' enum values (ALCOHOL = 0, LIQUEUR = 1) so we can check only the necessary combinations
@@ -9,3 +41,20 @@ notes re: GetMakeableCocktails
 re: user preferences
 - have a user flavor/preference survey to kick off recommendations
 - get user feedback into drinks and feed back into reco algorithm
+
+re: 11/03/22 makeable cocktails algos in UserService and related
+- added userCocktails field into UserDTO.  not yet added to UserDB (would have to be a string, which is fine) if we wanted to persist
+- can we reference the active user, or does there have to be a user specified in each function call?  see UserControllerExternal TODO
+- what is the meaning of Ingredients in Cocktail?  would it be easier to make this a List<Long> (DTO) / String (DB) that just includes the list of IDs?  This would
+work well with the below...
+- what is the meaning of an usage of numIngredientsInBar in CocktailDTO?  can we alter this to start at the number of ingredients required to make it (instead of 0)
+and decrement by 1 for each ingredient added?  this way, we can easily pull ones with '1' as the almostMakeable.  we can also set the value easily in CocktailDTO by
+adding 1 to it when each Cocktail's Ingredients list is parsed if we do the above.  Alternatively, we could add 1 to the Cocktail's numIngredients for every Relationship
+object where the Cocktail's ID shows up.  could do this with minimal lookup time using a HashMap > **we should do this**
+- the genesis of these notes is my attempt to write updateAllCocktailsByUserUponChange - adding cocktails that can now be made would currently require going through
+the entire database of cocktails again
+
+- store makeable cocktails in database for each user
+- get to a point where we only use the update function (even first time user makes pantry, it runs update on only adds)
+- need to figure out a way to force a pull over the new cocktails (or entire database) when we add new cocktails; check against both their pantry and our last
+cocktails update

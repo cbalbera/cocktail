@@ -23,6 +23,8 @@ public class CocktailDB {
     private Long bartenderId;
     private String thumbnails;
     //TODO: a field for "classic" or no bartenderID = classic?
+    private String ingredients;
+    private int ingredientCount;
 
     // empty constructor
     CocktailDB() {}
@@ -30,7 +32,7 @@ public class CocktailDB {
     // constructor with all items
 
 
-    public CocktailDB(Long id, String name, String tools, int difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIds, Boolean isChild, Long parentId, Long bartenderId, String thumbnails) {
+    public CocktailDB(Long id, String name, String tools, int difficulty, String instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIds, Boolean isChild, Long parentId, Long bartenderId, String thumbnails, String ingredients, int ingredientCount) {
         this.id = id;
         this.name = name;
         this.tools = tools;
@@ -45,6 +47,9 @@ public class CocktailDB {
         this.parentId = parentId;
         this.bartenderId = bartenderId;
         this.thumbnails = thumbnails;
+        this.ingredients = ingredients;
+        //TODO: add logic so that inputting cocktail's ingredients automatically counts said ingredients
+        this.ingredientCount = ingredientCount;
     }
 
     public Long getId() {
@@ -157,5 +162,21 @@ public class CocktailDB {
 
     public void setThumbnails(String thumbnails) {
         this.thumbnails = thumbnails;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public int getIngredientCount() {
+        return ingredientCount;
+    }
+
+    public void setIngredientCount(int ingredientCount) {
+        this.ingredientCount = ingredientCount;
     }
 }

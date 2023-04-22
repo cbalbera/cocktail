@@ -14,19 +14,21 @@
             <generator class="native"/>
         </id>
 
-        <property name = "name" column = "name" type = "string"/>
+        <property name = "name" column = " name" type = "string"/>
         <property name = "tools" column = "tools" type = "string"/> <!--string will contain list of IDs-->
         <property name = "difficulty" column = "difficulty" type = "int"/> <!--int mapped to enum in Java class-->
         <property name = "instructions" column = "instructions" type = "string"/>
         <property name = "tags" column = "tags" type = "string"/>
         <property name = "glassType" column = "glass_type" type = "string"/>
         <property name = "iceType" column = "ice_type" type = "string"/>
-        <property name = "isParent" column = "isParent" type = "int"/> <!--boolean mapped to numeric-->
-        <property name = "childrenIds" column = "childrenIds" type = "string"/> <!--string will contain list of IDs-->
-        <property name = "isChild" column = "isChild" type = "int"/> <!--boolean mapped to numeric-->
-        <property name = "parentId" column = "parentId" type = "int"/>
-        <property name = "bartenderId" column = "bartenderId" type = "int"/>
+        <property name = "isParent" column = "is_parent" type = "int"/> <!--boolean mapped to numeric-->
+        <property name = "childrenIds" column = "children_ids" type = "string"/> <!--string will contain list of IDs-->
+        <property name = "isChild" column = "is_child" type = "int"/> <!--boolean mapped to numeric-->
+        <property name = "parentId" column = "parent_id" type = "int"/>
+        <property name = "bartenderId" column = "bartender_id" type = "int"/>
         <property name = "thumbnails" column = "thumbnails" type = "string"/>
+        <property name = "ingredients" column = "ingredients" type = "string"/> <!-- this is a hashmap in DTO -->
+        <property name = "ingredientCount" column = "ingredient_count" type = "int"/>
 
     </class>
 </hibernate-mapping>

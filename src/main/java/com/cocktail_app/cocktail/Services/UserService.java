@@ -129,13 +129,15 @@ public class UserService {
         return this.userRepo.existsByUserId(userId);
     }
 
-
-    //this would be generated on app startup or changes to the bar
+    //get all cocktails a user can currently make
+    //this would be generated on app startup
+    //on changes to the bar, the below update function would be used instead
     public List<CocktailDTO> getAllCocktailsByUser(UUID userId) {
         UserDB user = userRepo.findUserByUUID(userId);
 
         List<Long> pantry = converter.parseStringToListLong(user.getPantry());
 
+        // get all relationships - expensive
         List<CocktailIngredientRelationship> relationships = relationshipService.getRelationships();
 
         // convert pantry to HashMap - one loop instead of N loops where N = no. of cocktails
@@ -145,14 +147,16 @@ public class UserService {
         }
 
         List<CocktailDB> allCocktailsDBs = this.userRepo.getAllCocktails();
+        //map cocktails id : DTO
         HashMap<Long, CocktailDTO> allCocktails = new HashMap<>();
 
-        //convert all of the db objects to DTOs
+        //convert all of the CocktailDB objects to DTOs
         for (CocktailDB cocktailDB: allCocktailsDBs) {
             allCocktails.put(cocktailDB.getId(), converter.convertCocktailDBToCocktailDTO(cocktailDB));
         }
 
         //map relationships to cocktails and check bar for ingredients that the user has
+        //runs in O(N) where N is number of cocktail-ingredient relationships - as a result, this may be expensive
         for(CocktailIngredientRelationship relationship : relationships){
             boolean ingredientInPantry;
             if(ingredientMap.get(relationship.getIngredientId())){
@@ -160,17 +164,87 @@ public class UserService {
             } else {
                 ingredientInPantry = false;
             }
-            allCocktails.get(relationship.getCocktailId()).getIngredients().put(ingredientService.findIngredientById(relationship.getIngredientId()), ingredientInPantry);
+            // this process recreates the ingredients list for each cocktail
+            // and stores them by whether they exist in pantry
+            CocktailDTO cocktail = allCocktails.get(relationship.getCocktailId());
+            cocktail.getIngredients().put(relationship.getIngredientId(), ingredientInPantry);
+            // the below code is dependent upon int ingredients for each cocktail
+            // being stored locally for each user
             if(ingredientInPantry){
-                allCocktails.get(relationship.getCocktailId()).incrementNumIngredientsInBar();
+                cocktail.setIngredientCount(cocktail.getIngredientCount()-1);
             }
+
         }
 
+        // ** return value is list of all cocktails as they pertain to **
+        // ** this user's ability to make them with their ingredients **
+        // frontend will handle calculating remaining ingredients and makeable/almost-makeable from there
+        // by checking ingredient count == 0 or 1
         List<CocktailDTO> finalCocktailList = new ArrayList(allCocktails.values());
 
         return finalCocktailList;
     }
 
+    // TODO: confirm we can either:
+    // a) pass userCocktails (list of cocktails as they pertain to this user) back from the frontend, or
+    // b) pass only the newly makeable cocktails and have the frontend merge
+    // if we can't we'll have to re-run the entire list again (see above function, getAllCocktailsByUser)
+    public List<CocktailDTO> updateAllCocktailsByUserUponChange(UUID userId, List<CocktailDTO> userCocktails, List<HashSet<Long>> modifiedIngredients) {
+        // this function will pull all relationships that are affected by a
+        // change to the ingredient list
+        UserDB userDB = this.userRepo.findUserByUUID(userId);
+        UserDTO user = convertUserDBToUserDTO(userDB);
+        HashSet<Long> addedIngredients = modifiedIngredients.get(0);
+        HashSet<Long> removedIngredients = modifiedIngredients.get(1);
+        HashSet<Long> possibleAddedCocktails = getAlteredCocktails(addedIngredients); //TODO make sure this actually access database
+        HashSet<Long> removedCocktails = getAlteredCocktails(removedIngredients);
+
+        // if we can have the frontend merge - option b above
+        // instead of taking userCocktails as an argument to the function
+        // we should create an empty List<CocktailDTO> called userNewCocktails here
+        // and an empty List<CocktailDTO> called userRemovedCocktails below
+        // and return a 2-item List<List<CocktailDTO>> to pass both of those lists
+
+        // at present, we are modifying the userCocktails list passed to us by frontend
+
+        // go through possibleAddedCocktails and add newly makeable cocktails to userCocktails
+        for (Long cocktailId : possibleAddedCocktails) {
+            CocktailDB cocktailDB = this.userRepo.findCocktailById(cocktailId);
+            CocktailDTO cocktail = this.converter.convertCocktailDBToCocktailDTO(cocktailDB);
+            // when CocktailDTO is created from the DB object, ingredients are a
+            // string modeling list of Long
+            // and the HashMap of ingredients (Long, boolean) shows all of the
+            // ingredients as missing (value: false)
+            // this loop updates that HashMap so we can pass both the missing
+            // ingredients and the count thereof (importantly, when it is 0 or 1)
+            // to the frontend
+            Map<Long,Boolean> ingredients = cocktail.getIngredients();
+            // for each ingredient of this cocktail
+            for (Long ingredientId : ingredients.keySet()) {
+                // check if ingredient is already present in pantry or added
+                //TODO: need to pass pantry as well as, since we are starting from a fresh CocktailDTO, all ingredients will be marked false
+                if(ingredients.get(ingredientId) || // already present, or
+                        addedIngredients.contains(ingredientId)) { // added
+                    // if so, decrement ingredient count (how many
+                    // ingredients user does not have) by 1
+                    // as we are starting from a fresh CocktailDTO
+                    // which will have its ingredientCount == total ingredients
+                    cocktail.setIngredientCount(cocktail.getIngredientCount()-1);
+                }
+            }
+        }
+
+        // go through userCocktails & compare against removedCocktails
+        for(CocktailDTO cocktail : userCocktails) {
+            if (removedCocktails.contains(cocktail.getId())) {
+                cocktail.setIngredientCount(cocktail.getIngredientCount()+1);
+            }
+        }
+
+        return userCocktails;
+    }
+
+    /*
     public List<CocktailDTO> GetMakeableCocktails(UUID userId) {
         UserDB user = userRepo.findUserByUUID(userId);
         List<Long> pantry = converter.parseStringToListLong(user.getPantry());
@@ -227,7 +301,25 @@ public class UserService {
         return output;
     }
 
-    public List<IngredientDTO> updatePantry(UUID userId, List<Long> newPantry) {
+     */
+
+    public List<IngredientDTO> getPantry(UUID userId) {
+        UserDB user = this.userRepo.findUserByUUID(userId);
+        List<Long> pantryIds = converter.parseStringToListLong(user.getPantry());
+        List<IngredientDTO> output = new ArrayList<>();
+        for (Long id : pantryIds) {
+            //TODO check if ingredient exists by ID and/or break out before next line if IngredientDB == null
+            IngredientDB ingredient = this.userRepo.findIngredientById(id);
+            output.add(converter.convertIngredientDBToIngredientDTO(ingredient));
+        }
+        return output;
+    }
+
+    public List<HashSet<Long>> updatePantry(UUID userId, List<Long> newPantry) {
+        // this function will output a List containing 2 Lists for use in the
+        // updateAllCocktailsByUserUponChange function above
+        // the first list will be added IDs, the second will be deleted IDs
+
         // newPantry will be given in the form of a list of IDs in form Long
         // that represent IngredientDTO.
         // IDs with negative values will be those whose presence in the pantry
@@ -248,6 +340,10 @@ public class UserService {
         System.out.println("newPantry is "+newPantry);
         Collections.sort(newPantry); // TODO confirm this works
         System.out.println("newPantry is now "+newPantry);
+
+        HashSet<Long> addedIngredients = new HashSet<>();
+        HashSet<Long> removedIngredients = new HashSet<>();
+
         // user pantries are already sorted ascending in addUser
         int i = 0, j = userPantryCopy.size()-1;
         while(newPantry.get(i) < 0) {
@@ -265,6 +361,7 @@ public class UserService {
                 System.out.println("deleting at index of "+j+" to remove id of "+userPantryCopy.get(j));
                 // delete item
                 userPantryCopy.remove(j);
+                removedIngredients.add(idValue);
                 j = Math.max(j-1,0);
                 System.out.println("j is now "+j);
             } else {
@@ -272,13 +369,15 @@ public class UserService {
                 // this item did not already exist in pantry -->
                 // change is an add
                 userPantryCopy.add(j+1,idValue);
+                addedIngredients.add(idValue);
             }
-            if (j == -1) {
+            if (j == -1) { // we've gotten to the end of the existing pantry
                 // add all remaining changed ingredients - all ingredients
                 // with negative values
                 while (newPantry.get(i) < 0) {
                     idValue = -1*newPantry.get(i);
                     userPantryCopy.add(0,idValue);
+                    addedIngredients.add(idValue);
                     i++;
                 }
 
@@ -291,24 +390,21 @@ public class UserService {
         // here, we could do nothing & simply persist the new pantry to the
         // database via conversion of List<Long> to String
 
-        //TODO test me
+        // persist new pantry to database
         String userNewPantry = converter.listLongToString(userPantryCopy);
         System.out.println("newPantry is "+userNewPantry);
         userRepo.updatePantry(userNewPantry,userId);
+
+        // return List containing 2 Lists (added, removed)
+        List<HashSet<Long>> outputList = new ArrayList<>();
+        outputList.add(addedIngredients);
+        outputList.add(removedIngredients);
+        return outputList;
 
         // I am also going to have this output List<IngredientDTO> using this
         // last loop because I expect we will want to show the user their new
         // pantry once it has been updated
 
-        // there is also the potential to have this run faster by doing the
-        // conversion within the nested while loop above
-        //TODO these next five lines should probably be a helper function
-        List<IngredientDTO> output = new ArrayList<>();
-        for (Long k:userPantryCopy) {
-            IngredientDB ingredientDB = userRepo.findIngredientById(k);
-            output.add(converter.convertIngredientDBToIngredientDTO(ingredientDB));
-        }
-        return output;
     }
 
     // private methods
@@ -321,6 +417,7 @@ public class UserService {
         List<Long> pantry = converter.parseStringToListLong(user.getPantry());
         List<Long> favoriteCocktails = converter.parseStringToListLong(user.getFavoriteCocktails());
         List<Long> favoriteBartenders = converter.parseStringToListLong(user.getFavoriteBartenders());
+        List<Long> makeableCocktails = converter.parseStringToListLong(user.getMakeableCocktails());
         return new UserDTO(
                 user.getId(),
                 user.getFirstName(),
@@ -332,7 +429,8 @@ public class UserService {
                 pantry,
                 favoriteCocktails,
                 favoriteBartenders,
-                user.getZipCode()
+                user.getZipCode(),
+                makeableCocktails
         );
     }
 
@@ -343,6 +441,7 @@ public class UserService {
         String pantry = converter.listLongToString(user.getPantry());
         String favoriteCocktails = converter.listLongToString(user.getFavoriteCocktails());
         String favoriteBartenders = converter.listLongToString(user.getFavoriteBartenders());
+        String makeableCocktails = converter.listLongToString(user.getMakeableCocktails());
         return new UserDB(
                 user.getId(),
                 user.getFirstName(),
@@ -354,7 +453,8 @@ public class UserService {
                 pantry,
                 favoriteCocktails,
                 favoriteBartenders,
-                user.getZipCode()
+                user.getZipCode(),
+                makeableCocktails
         );
     }
 
@@ -395,6 +495,25 @@ public class UserService {
         return output;
     }
 
+    // checking whether cocktails were modified
+    private HashSet<Long> getAlteredCocktails(HashSet<Long> ingredientList) {
+        HashSet<Long> alteredCocktails = new HashSet<>();
+        for (Long id : ingredientList) {
+            List<CocktailIngredientRelationship> relationships =
+                    this.userRepo.getAllRelationshipsByIngredient(id);
+            for (CocktailIngredientRelationship relationship : relationships) {
+                Long cocktailId = relationship.getCocktailId();
+                if (!alteredCocktails.contains(cocktailId)) {
+                    alteredCocktails.add(cocktailId);
+                }
+            }
+        }
+        return alteredCocktails;
+    }
+
+    /* The below functions were initial attempts at efficiently getting the
+    /* list of makeable cocktails
+
     // this method is O(2^n * n) as written, with slight reduction possible by only evaluating sets
     // where there is at least 1 ALCOHOL or LIQUEUR
     // as such, this (and methods that use it, such as those to determine makeable cocktails) is to
@@ -432,5 +551,7 @@ public class UserService {
         }
         return true;
     }
+
+     */
 
 }

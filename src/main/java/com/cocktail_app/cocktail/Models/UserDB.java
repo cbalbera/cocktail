@@ -29,6 +29,7 @@ public class UserDB {
     private String favoriteCocktails;
     private String favoriteBartenders;
     private int zipCode;
+    private String makeableCocktails;
 
     // empty constructor
     public UserDB() {
@@ -36,7 +37,7 @@ public class UserDB {
 
     // constructor with all items
 
-    public UserDB(UUID id, String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode) {
+    public UserDB(UUID id, String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode, String makeableCocktails) {
         this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,22 +49,7 @@ public class UserDB {
         this.favoriteCocktails = favoriteCocktails;
         this.favoriteBartenders = favoriteBartenders;
         this.zipCode = zipCode;
-    }
-
-    // constructor with all items except for auto-generated ID
-
-
-    public UserDB(String firstName, String lastName, String email, String hashedPassword, int userType, String cocktailList, String pantry, String favoriteCocktails, String favoriteBartenders, int zipCode) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.hashedPassword = hashedPassword;
-        this.userType = userType;
-        this.cocktailList = cocktailList;
-        this.pantry = pantry;
-        this.favoriteCocktails = favoriteCocktails;
-        this.favoriteBartenders = favoriteBartenders;
-        this.zipCode = zipCode;
+        this.makeableCocktails = makeableCocktails;
     }
 
     public UUID getId() {
@@ -153,6 +139,14 @@ public class UserDB {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getMakeableCocktails() {
+        return makeableCocktails;
+    }
+
+    public void setMakeableCocktails(String makeableCocktails) {
+        this.makeableCocktails = makeableCocktails;
     }
 
     // excludes hashed password

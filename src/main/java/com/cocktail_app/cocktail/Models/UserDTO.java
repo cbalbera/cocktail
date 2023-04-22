@@ -20,13 +20,15 @@ public class UserDTO {
     private String email;
     private String hashedPassword;
     private userType userType; // enumerated
+    //TODO: determine if cocktailList in this DTO is necessary
+    // due to structure of getCocktail
     private List<Long> cocktailList;
     // moving fwd with assumption that pantry does not include quantities
     private List<Long> pantry;
     private List<Long> favoriteCocktails;
     private List<Long> favoriteBartenders;
     private int zipCode;
-    private int numIngredientsInBar;
+    private List<Long> makeableCocktails;
 
     // empty constructor
     public UserDTO() {
@@ -34,7 +36,7 @@ public class UserDTO {
 
     // constructor with all items
 
-    public UserDTO(UUID id, String firstName, String lastName, String email, String hashedPassword, UserDTO.userType userType, List<Long> cocktailList, List<Long> pantry, List<Long> favoriteCocktails, List<Long> favoriteBartenders, int zipCode) {
+    public UserDTO(UUID id, String firstName, String lastName, String email, String hashedPassword, UserDTO.userType userType, List<Long> cocktailList, List<Long> pantry, List<Long> favoriteCocktails, List<Long> favoriteBartenders, int zipCode, List<Long> makeableCocktails) {
         this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,6 +48,7 @@ public class UserDTO {
         this.favoriteCocktails = favoriteCocktails;
         this.favoriteBartenders = favoriteBartenders;
         this.zipCode = zipCode;
+        this.makeableCocktails = makeableCocktails;
     }
 
     // constructor with all items except for auto-generated ID
@@ -149,6 +152,14 @@ public class UserDTO {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public List<Long> getMakeableCocktails() {
+        return makeableCocktails;
+    }
+
+    public void setMakeableCocktails(List<Long> makeableCocktails) {
+        this.makeableCocktails = makeableCocktails;
     }
 
     // excludes hashed password

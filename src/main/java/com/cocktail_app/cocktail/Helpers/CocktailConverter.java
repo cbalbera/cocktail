@@ -7,7 +7,9 @@ import com.cocktail_app.cocktail.Models.IngredientDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.Character.isDigit;
@@ -20,6 +22,7 @@ public class CocktailConverter {
         int difficulty = difficultyEnumToInt(cocktail.getDifficulty());
         String instructions = listStringToString(cocktail.getInstructions());
         String thumbnails = listStringToString(cocktail.getThumbnails());
+        String ingredients = mapToString(cocktail.getIngredients());
         return new CocktailDB(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -34,7 +37,9 @@ public class CocktailConverter {
                 cocktail.getIsChild(),
                 cocktail.getParentId(),
                 cocktail.getBartenderId(),
-                thumbnails
+                thumbnails,
+                ingredients,
+                cocktail.getIngredientCount()
         );
     }
 
@@ -43,6 +48,7 @@ public class CocktailConverter {
         CocktailDTO.Difficulty difficulty = difficultyIntToEnum(cocktail.getDifficulty());
         List<String> instructions = parseStringToListString(cocktail.getInstructions());
         List<String> thumbnails = parseStringToListString(cocktail.getThumbnails());
+        Map<Long,Boolean> ingredients = parseStringToMapString(cocktail.getIngredients());
         return new CocktailDTO(
                 cocktail.getId(),
                 cocktail.getName(),
@@ -57,7 +63,9 @@ public class CocktailConverter {
                 cocktail.getIsChild(),
                 cocktail.getParentId(),
                 cocktail.getBartenderId(),
-                thumbnails
+                thumbnails,
+                ingredients,
+                cocktail.getIngredientCount()
         );
     }
 
@@ -107,7 +115,7 @@ public class CocktailConverter {
     // methods for packaging to and from DB-friendly types for use in the above DB <> DTO conversions
     // String to List<String> for use with Instructions
     public List<String> parseStringToListString(String instructions) {
-        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
+        // TODO: enforce this method's assumption that instructions strings will be delimited using a tilde
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<String> output = new ArrayList<String>();
         char delimiter = '~';
@@ -141,7 +149,7 @@ public class CocktailConverter {
         char[] instructionsChars = instructions.toCharArray();
         char period = '.';
         char tilde = '~';
-        // this makes the assumption that a number followed by a period signifies the end of a line
+        // this makes the assumption that a number followed by a period signifies the start of a new line
         for (int i = 3; i < n; i++) {
             if (isDigit(instructionsChars[i-1]) && instructionsChars[i] == period) {
                 instructionsChars[i-2] = tilde;
@@ -155,7 +163,7 @@ public class CocktailConverter {
     // cocktailList, pantry, favoriteCocktails, favoriteBartenders
     public List<Long> parseStringToListLong(String string) {
         if (string == null) { return null; }
-        // TODO: enforce this method's assumption that instructions strings will be delimited using a semicolon
+        // TODO: enforce this method's assumption that instructions strings will be delimited using a tilde
         // note that this is handled in instructionsToString below, so only necessary for new instructions input
         List<Long> output = new ArrayList<Long>();
         char delimiter = '~';
@@ -182,6 +190,43 @@ public class CocktailConverter {
         String output = listLong
                 .stream()
                 .map(String::valueOf)
+                .collect(Collectors.joining("~"));
+        return output;
+    }
+
+    // for ingredients
+    // String to Map (keys)
+    public Map<Long,Boolean> parseStringToMapString(String ingredients) {
+        // TODO: enforce this method's assumption that ingredients strings will be delimited using a tilde
+        // note that this is handled in instructionsToString below, so only necessary for new instructions input
+        Map<Long,Boolean> output = new HashMap<>();
+        char delimiter = '~';
+        int priorLineStart = 0, i = 0, n = ingredients.length();
+        // add instructions line
+        for(; i < n; i++) {
+            if (ingredients.charAt(i) == delimiter) {
+                String toAdd = ingredients.substring(priorLineStart,i);
+                Long id = Long.parseLong(toAdd);
+                // important that boolean value is always false here - see UserService's update upon change function for details
+                output.put(id,false);
+                priorLineStart = i+1;
+            }
+        }
+        // add final instructions line, which will end at end of String and not have a delimiter
+        String toAdd = ingredients.substring(priorLineStart,i);
+        Long id = Long.parseLong(toAdd);
+        output.put(id,false);
+        return output;
+    }
+
+    // Map (keys) to String
+    // TODO this appears to work, but could use further testing
+    public String mapToString(Map<Long,Boolean> map) {
+        if (map == null) { return null; }
+        String output = map
+                .entrySet()
+                .stream()
+                .map(e -> e.getKey().toString())
                 .collect(Collectors.joining("~"));
         return output;
     }

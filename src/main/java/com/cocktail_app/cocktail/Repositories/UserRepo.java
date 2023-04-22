@@ -52,6 +52,9 @@ public interface UserRepo extends JpaRepository<UserDB,Long> {
     void updatePantry(@Param("pantry") String pantry, @Param("id") UUID id);
     // https://docs.spring.io/spring-data/data-jpa/docs/current/reference/html/#jpa.modifying-queries
 
+    @Query(value="SELECT u FROM CocktailIngredientRelationship u WHERE ingredient_id=:id")
+    List<CocktailIngredientRelationship> getAllRelationshipsByIngredient(@Param("id") Long id);
+
     /*
     @Query(value="SELECT CocktailDB.name, CocktailDB.id " +
             "FROM CocktailDB INNER JOIN CocktailIngredientRelationship" +

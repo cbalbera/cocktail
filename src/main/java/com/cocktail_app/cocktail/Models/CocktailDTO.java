@@ -26,18 +26,21 @@ public class CocktailDTO {
     private Long parentId;
     private Long bartenderId;
     private List<String> thumbnails;
-
-    private Map<IngredientDTO, Boolean> ingredients;
-
-    private int numIngredientsInBar = 0;
+    private Map<Long, Boolean> ingredients;
+    // ingredient count here refers to the number of ingredients needed to
+    // make the cocktail **that a USER DOESN'T ALREADY HAVE**
+    // as a result, in the DB, ingredientCount is always == the total number
+    // of ingredients in the cocktail, as there is currently no related user
+    // this field is decremented by 1 for every ingredient the user has
+    // when this field == 0, the cocktail is makeable
+    // when it is 1, the cocktail is almost makeable
+    private int ingredientCount;
 
     // empty constructor
     CocktailDTO() {}
 
     // constructor with all items
-
-
-    public CocktailDTO(Long id, String name, String tools, Difficulty difficulty, List<String> instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIds, Boolean isChild, Long parentId, Long bartenderId, List<String> thumbnails) {
+    public CocktailDTO(Long id, String name, String tools, Difficulty difficulty, List<String> instructions, String tags, String glassType, String iceType, Boolean isParent, String childrenIds, Boolean isChild, Long parentId, Long bartenderId, List<String> thumbnails, Map<Long, Boolean> ingredients, int ingredientCount) {
         this.id = id;
         this.name = name;
         this.tools = tools;
@@ -52,7 +55,8 @@ public class CocktailDTO {
         this.parentId = parentId;
         this.bartenderId = bartenderId;
         this.thumbnails = thumbnails;
-        this.numIngredientsInBar = 0;
+        this.ingredients = ingredients;
+        this.ingredientCount = ingredientCount;
     }
 
     public Long getId() {
@@ -167,16 +171,16 @@ public class CocktailDTO {
         this.thumbnails = thumbnails;
     }
 
-    public void setIngredients(Map<IngredientDTO, Boolean> ingredients) { this.ingredients = ingredients; }
+    public void setIngredients(Map<Long, Boolean> ingredients) { this.ingredients = ingredients; }
 
-    public Map<IngredientDTO, Boolean> getIngredients() {return ingredients;}
+    public Map<Long, Boolean> getIngredients() {return ingredients;}
 
-    public void setNumIngredientsInBar(int numIngredientsInBar) {this.numIngredientsInBar = numIngredientsInBar; }
+    public int getIngredientCount() {
+        return ingredientCount;
+    }
 
-    public int getNumIngredientsInBar() {return numIngredientsInBar; }
-
-    public void incrementNumIngredientsInBar() {
-        numIngredientsInBar +=1;
+    public void setIngredientCount(int ingredientCount) {
+        this.ingredientCount = ingredientCount;
     }
 
     @Override

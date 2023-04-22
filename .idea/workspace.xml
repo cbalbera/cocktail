@@ -4,6 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="81412d8f-bf05-4668-a432-ad2d889841a3" name="Changes" comment="sharpening of cocktail list, etc.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/cocktail_app/cocktail/ServiceTests/CocktailServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Controllers/UserControllerExternal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Helpers/CocktailConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Helpers/CocktailConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/CocktailDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Models/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Repositories/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cocktail_app/cocktail/Services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/CocktailDB.hbm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/CocktailDB.hbm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/notes" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/notes" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +78,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
@@ -130,7 +144,7 @@
       <updated>1660666938596</updated>
     </task>
     <task active="true" id="Default" summary="Default task">
-      <changelist id="af636dad-aa49-4136-a648-0900758acfa1" name="Changes" comment="initial commit" />
+      <changelist id="81412d8f-bf05-4668-a432-ad2d889841a3" name="Changes" comment="cleanup of todo's in various classes" />
       <created>1660684631958</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -314,6 +328,15 @@
     <option name="localTasksCounter" value="27" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:javax.persistence:javax.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate:hibernate-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -349,6 +372,7 @@
     <MESSAGE value="implemented makeable &amp; almost-makeable cocktail search for users" />
     <MESSAGE value="added fields for bartender and thumbnails to Cocktail class" />
     <MESSAGE value="cleanup of todo's in various classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleanup of todo's in various classes" />
+    <MESSAGE value="sharpening of cocktail list, etc." />
+    <option name="LAST_COMMIT_MESSAGE" value="sharpening of cocktail list, etc." />
   </component>
 </project>
