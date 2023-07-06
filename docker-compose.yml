@@ -1,0 +1,27 @@
+version: '1.0'
+
+services:
+  # java app
+  java_app:
+    container_name: java_app
+    image: cbalbera/fire_cocktails_app:1.0.0
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5132/postgres
+      - DATABASE_USERNAME=testuser
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - java_db
+
+  # postgres database
+  java_db:
+    container_name: java_db
+    image: postgres:12
+    ports:
+      - 5132:5132
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: testuser
+      POSTGRES_DB: cocktail
